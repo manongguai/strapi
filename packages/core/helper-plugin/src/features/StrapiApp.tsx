@@ -1,17 +1,10 @@
 import * as React from 'react';
 
-import { LinkProps } from 'react-router-dom';
-
 import { TranslationMessage } from '../types';
 
 import type { Permission } from './RBAC';
 
-type ComponentModule = () =>
-  | Promise<{ default?: React.ComponentType } | React.ComponentType>
-  | { default?: React.ComponentType }
-  | React.ComponentType;
-
-interface MenuItem extends Pick<LinkProps, 'to'> {
+interface MenuItem {
   to: string;
   icon: React.ElementType;
   intlLabel: TranslationMessage;
@@ -21,7 +14,7 @@ interface MenuItem extends Pick<LinkProps, 'to'> {
    */
   permissions: Permission[];
   notificationsCount?: number;
-  Component?: ComponentModule;
+  Component: React.LazyExoticComponent<React.ComponentType>;
   exact?: boolean;
 }
 
@@ -64,13 +57,8 @@ interface Plugin {
   pluginId: string;
 }
 
-interface StrapiAppSettingLink {
+interface StrapiAppSettingLink extends Omit<MenuItem, 'icon' | 'notificationCount'> {
   id: string;
-  to: string;
-  intlLabel: TranslationMessage;
-  Component: ComponentModule;
-  permissions: Permission[];
-  exact?: boolean;
 }
 
 interface StrapiAppSetting {
@@ -188,5 +176,4 @@ export type {
   StrapiAppSetting,
   RunHookSeries,
   RunHookWaterfall,
-  ComponentModule,
 };

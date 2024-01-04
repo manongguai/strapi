@@ -30,7 +30,6 @@ import { UseCasePage } from './pages/UseCasePage';
 import { setAdminPermissions } from './reducer';
 import { useInitQuery, useTelemetryPropertiesQuery } from './services/admin';
 import { PermissionMap } from './types/permissions';
-import { LazyCompo } from './utils/createRoute';
 
 type StrapiRoute = Pick<MenuItem, 'exact' | 'to'> & Required<Pick<MenuItem, 'Component'>>;
 
@@ -165,7 +164,9 @@ export const App = ({ authLogo, menuLogo, showReleaseNotification, showTutorials
                   path={to}
                   exact={exact || false}
                 >
-                  <LazyCompo loadComponent={Component} />
+                  <React.Suspense fallback={<LoadingIndicatorPage />}>
+                    <Component />
+                  </React.Suspense>
                 </Route>
               ))
             }

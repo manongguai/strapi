@@ -1,66 +1,56 @@
+import { lazy } from 'react';
+
 import type { Route } from '../../../../../admin/src/pages/Settings/constants';
 
 export const ROUTES_EE: Route[] = [
   ...(window.strapi.features.isEnabled(window.strapi.features.AUDIT_LOGS)
     ? [
         {
-          async Component() {
-            const { ProtectedListPage } = await import('./pages/AuditLogs/ListPage');
-
-            return ProtectedListPage;
-          },
+          Component: lazy(() =>
+            import('./pages/AuditLogs/ListPage').then((mod) => ({ default: mod.ProtectedListPage }))
+          ),
           to: '/settings/audit-logs',
           exact: true,
         },
       ]
     : []),
-
   ...(window.strapi.features.isEnabled(window.strapi.features.REVIEW_WORKFLOWS)
     ? [
         {
-          async Component() {
-            const { ProtectedReviewWorkflowsPage } = await import(
-              './pages/ReviewWorkflows/ListPage'
-            );
-
-            return ProtectedReviewWorkflowsPage;
-          },
+          Component: lazy(() =>
+            import('./pages/ReviewWorkflows/ListPage').then((mod) => ({
+              default: mod.ProtectedReviewWorkflowsPage,
+            }))
+          ),
           to: '/settings/review-workflows',
           exact: true,
         },
-
         {
-          async Component() {
-            const { ReviewWorkflowsCreatePage } = await import(
-              './pages/ReviewWorkflows/CreatePage'
-            );
-
-            return ReviewWorkflowsCreatePage;
-          },
+          Component: lazy(() =>
+            import('./pages/ReviewWorkflows/CreatePage').then((mod) => ({
+              default: mod.ReviewWorkflowsCreatePage,
+            }))
+          ),
           to: '/settings/review-workflows/create',
           exact: true,
         },
-
         {
-          async Component() {
-            const { ReviewWorkflowsEditPage } = await import('./pages/ReviewWorkflows/EditPage');
-
-            return ReviewWorkflowsEditPage;
-          },
+          Component: lazy(() =>
+            import('./pages/ReviewWorkflows/EditPage').then((mod) => ({
+              default: mod.ReviewWorkflowsEditPage,
+            }))
+          ),
           to: '/settings/review-workflows/:workflowId',
           exact: true,
         },
       ]
     : []),
-
   ...(window.strapi.features.isEnabled(window.strapi.features.SSO)
     ? [
         {
-          async Component() {
-            const { ProtectedSSO } = await import('./pages/SingleSignOnPage');
-
-            return ProtectedSSO;
-          },
+          Component: lazy(() =>
+            import('./pages/SingleSignOnPage').then((mod) => ({ default: mod.ProtectedSSO }))
+          ),
           to: '/settings/single-sign-on',
           exact: true,
         },

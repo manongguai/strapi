@@ -18,7 +18,6 @@ import { useConfiguration } from '../features/Configuration';
 import { useMenu } from '../hooks/useMenu';
 import { useOnce } from '../hooks/useOnce';
 import { AppLayout } from '../layouts/AppLayout';
-import { LazyCompo } from '../utils/createRoute';
 
 const CM = React.lazy(() =>
   import('../content-manager/pages/App').then((mod) => ({ default: mod.App }))
@@ -97,20 +96,28 @@ const Admin = () => {
             <Route path="/content-manager">
               <CM />
             </Route>
-            {menu
-              .filter((link) => link.Component)
-              .map(({ to, Component, exact }) => (
-                <Route
-                  // TODO: convert this in the spirit of https://github.com/strapi/strapi/pull/17685
-                  key={to}
-                  path={to}
-                  exact={exact || false}
-                >
-                  {/* we've filtered out the links that don't have a component above */}
-                  <LazyCompo loadComponent={Component!} />
-                </Route>
-              ))}
-            <Route path={['/settings', '/settings/:settingId']} exact>
+            {menu.map(({ to, Component, exact }) => {
+              if (!Component) return null;
+              else {
+                return (
+                  <Route
+                    // TODO: convert this in the spirit of https://github.com/strapi/strapi/pull/17685
+                    key={to}
+                    path={to}
+                    exact={exact || false}
+                  >
+                    <React.Suspense fallback={<LoadingIndicatorPage />}>
+                      <Component />
+                    </React.Suspense>
+                  </Route>
+                );
+              }
+            })}
+
+            <Route path={'/settings'} exact>
+              <SettingsPage />
+            </Route>
+            <Route path={'/settings/:settingId'}>
               <SettingsPage />
             </Route>
             <Route path="/marketplace">
@@ -124,9 +131,6 @@ const Admin = () => {
             </Route>
             <Route path="/500">
               <InternalErrorPage />
-            </Route>
-            <Route path="">
-              <NotFoundPage />
             </Route>
           </Switch>
         </React.Suspense>

@@ -1,4 +1,4 @@
-import { AuthResponse } from './pages/AuthResponse';
+import * as React from 'react';
 
 import type { SettingsMenu } from '../../../admin/src/constants';
 import type { PermissionMap } from '../../../admin/src/types/permissions';
@@ -29,7 +29,9 @@ export const ADMIN_PERMISSIONS_EE = {
 
 export const ROUTES_EE = [
   {
-    Component: () => ({ default: AuthResponse }),
+    Component: React.lazy(() =>
+      import('./pages/AuthResponse').then((module) => ({ default: module.AuthResponse }))
+    ),
     to: '/auth/login/:authResponse',
     exact: true,
   },

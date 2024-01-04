@@ -18,7 +18,7 @@ import { selectAdminPermissions } from '../selectors';
  * useMenu
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuItem = StrapiAppContextValue['menu'][number];
+type MenuItem = Omit<StrapiAppContextValue['menu'][number], 'Component'>;
 
 export interface Menu {
   generalSectionLinks: MenuItem[];

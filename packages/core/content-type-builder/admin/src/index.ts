@@ -22,11 +22,7 @@ export default {
         defaultMessage: 'Content Types Builder',
       },
       permissions: PERMISSIONS.main,
-      async Component() {
-        const component = await import('./pages/App');
-
-        return component;
-      },
+      Component: () => import('./pages/App'),
     });
 
     app.registerPlugin({

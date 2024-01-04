@@ -8,7 +8,6 @@ import { Redirect, Route, Switch, useParams } from 'react-router-dom';
 
 import { useEnterprise } from '../../hooks/useEnterprise';
 import { useSettingsMenu } from '../../hooks/useSettingsMenu';
-import { LazyCompo } from '../../utils/createRoute';
 
 import { SettingsNav } from './components/SettingsNav';
 import { ROUTES_CE, Route as IRoute } from './constants';
@@ -52,29 +51,23 @@ const SettingsPage = () => {
       <Switch>
         <Route path="/settings/application-infos" component={ApplicationInfoPage} exact />
         {makeUniqueRoutes(routes).map(({ to, Component, exact }) => (
-          <Route
-            // TODO: convert this in the spirit of https://github.com/strapi/strapi/pull/17685
-            key={to}
-            path={to}
-            exact={exact || false}
-          >
-            <LazyCompo loadComponent={Component} />
+          <Route key={to} path={to} exact={exact || false}>
+            <React.Suspense fallback={<LoadingIndicatorPage />}>
+              <Component />
+            </React.Suspense>
           </Route>
         ))}
-        {Object.values(settings).flatMap((section) => {
-          const { links } = section;
-
-          return links.map((link) => (
-            <Route
-              // TODO: convert this in the spirit of https://github.com/strapi/strapi/pull/17685
-              key={link.to}
-              path={link.to}
-              exact={link.exact || false}
-            >
-              <LazyCompo loadComponent={link.Component} />
-            </Route>
-          ));
-        })}
+        {Object.values(settings).flatMap(({ links }) =>
+          links.map((link) => {
+            return (
+              <Route key={link.id} path={link.to} exact={link.exact || false}>
+                <React.Suspense fallback={<LoadingIndicatorPage />}>
+                  <link.Component />
+                </React.Suspense>
+              </Route>
+            );
+          })
+        )}
       </Switch>
     </Layout>
   );

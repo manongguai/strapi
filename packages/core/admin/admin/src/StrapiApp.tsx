@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import { ReducersMapObject } from '@reduxjs/toolkit';
 import { darkTheme, lightTheme } from '@strapi/design-system';
 import { MenuItem, StrapiAppSetting, StrapiAppSettingLink } from '@strapi/helper-plugin';
@@ -152,26 +154,6 @@ class StrapiApp {
     }
   };
 
-  addCorePluginMenuLink = (link: MenuItem) => {
-    const stringifiedLink = JSON.stringify(link);
-
-    invariant(link.to, `link.to should be defined for ${stringifiedLink}`);
-    invariant(
-      typeof link.to === 'string',
-      `Expected link.to to be a string instead received ${typeof link.to}`
-    );
-    invariant(
-      ['/plugins/content-type-builder', '/plugins/upload'].includes(link.to),
-      'This method is not available for your plugin'
-    );
-    invariant(
-      link.intlLabel?.id && link.intlLabel?.defaultMessage,
-      `link.intlLabel.id & link.intlLabel.defaultMessage for ${stringifiedLink}`
-    );
-
-    this.menu.push(link);
-  };
-
   addFields = (fields: Field | Field[]) => {
     if (Array.isArray(fields)) {
       fields.map((field) => this.library.fields.add(field));
@@ -180,28 +162,49 @@ class StrapiApp {
     }
   };
 
-  addMenuLink = (link: MenuItem) => {
-    const stringifiedLink = JSON.stringify(link);
-
-    invariant(link.to, `link.to should be defined for ${stringifiedLink}`);
+  addMenuLink = (
+    link: Omit<MenuItem, 'Component'> & {
+      Component: () => Promise<{ default: React.ComponentType }>;
+    }
+  ) => {
+    invariant(link.to, `[${link.intlLabel.defaultMessage}]: link.to should be defined`);
     invariant(
       typeof link.to === 'string',
-      `Expected link.to to be a string instead received ${typeof link.to}`
+      `[${
+        link.intlLabel.defaultMessage
+      }]: Expected link.to to be a string instead received ${typeof link.to}`
     );
     invariant(
       link.intlLabel?.id && link.intlLabel?.defaultMessage,
-      `link.intlLabel.id & link.intlLabel.defaultMessage for ${stringifiedLink}`
+      `[${link.intlLabel.defaultMessage}]: link.intlLabel.id & link.intlLabel.defaultMessage should be defined`
     );
     invariant(
       link.Component && typeof link.Component === 'function',
-      `link.Component should be a valid React Component`
+      `[${link.intlLabel.defaultMessage}]: link.Component must be a function returning a Promise that returns a default component. Please use: \`Component: () => import(path)\` instead.`
     );
     invariant(
       link.icon && typeof link.icon === 'function',
-      `link.Icon should be a valid React Component`
+      `[${link.intlLabel.defaultMessage}]: link.Icon should be a valid React Component`
     );
 
-    this.menu.push(link);
+    if (
+      link.Component &&
+      typeof link.Component === 'function' &&
+      // @ts-expect-error – shh
+      link.Component[Symbol.toStringTag] === 'AsyncFunction'
+    ) {
+      console.warn(`
+      [${link.intlLabel.defaultMessage}]: [deprecated] addMenuLink() was called with an async Component from the plugin "${link.intlLabel.defaultMessage}". This will be removed
+        in the future. Please use: \`Component: () => import(path)\` instead.
+      `);
+    }
+
+    this.menu.push({
+      ...link,
+
+      // React.lazy can be removed once we migrate to react-router@6, because the <Route /> component can handle it natively
+      Component: React.lazy(link.Component),
+    });
   };
 
   addMiddlewares = (middlewares: Middleware[]) => {
@@ -216,26 +219,49 @@ class StrapiApp {
     });
   };
 
-  addSettingsLink = (sectionId: keyof StrapiApp['settings'], link: StrapiAppSettingLink) => {
+  addSettingsLink = (
+    sectionId: keyof StrapiApp['settings'],
+    link: Omit<StrapiAppSettingLink, 'Component'> & {
+      Component: () => Promise<{ default: React.ComponentType }>;
+    }
+  ) => {
     invariant(this.settings[sectionId], 'The section does not exist');
 
-    const stringifiedLink = JSON.stringify(link);
-
-    invariant(link.id, `link.id should be defined for ${stringifiedLink}`);
+    invariant(link.id, `[${link.intlLabel.defaultMessage}]: link.id should be defined`);
     invariant(
       link.intlLabel?.id && link.intlLabel?.defaultMessage,
-      `link.intlLabel.id & link.intlLabel.defaultMessage for ${stringifiedLink}`
+      `[${link.intlLabel.defaultMessage}]: link.intlLabel.id & link.intlLabel.defaultMessage`
     );
-    invariant(link.to, `link.to should be defined for ${stringifiedLink}`);
+    invariant(link.to, `[${link.intlLabel.defaultMessage}]: link.to should be defined`);
     invariant(
       link.Component && typeof link.Component === 'function',
-      `link.Component should be a valid React Component`
+      `[${link.intlLabel.defaultMessage}]: link.Component must be a function returning a Promise. Please use: \`Component: () => import(path)\` instead.`
     );
 
-    this.settings[sectionId].links.push(link);
+    if (
+      link.Component &&
+      typeof link.Component === 'function' &&
+      // @ts-expect-error – shh
+      link.Component[Symbol.toStringTag] === 'AsyncFunction'
+    ) {
+      console.warn(`
+      [${link.intlLabel.defaultMessage}]: [deprecated] addMenuLink() was called with an async Component from the plugin "${link.intlLabel.defaultMessage}". This will be removed
+        in the future. Please use: \`Component: () => import(path)\` instead.
+      `);
+    }
+
+    this.settings[sectionId].links.push({
+      ...link,
+
+      // React.lazy can be removed once we migrate to react-router@6, because the <Route /> component can handle it natively
+      Component: React.lazy(link.Component),
+    });
   };
 
-  addSettingsLinks = (sectionId: keyof StrapiApp['settings'], links: StrapiAppSettingLink[]) => {
+  addSettingsLinks = (
+    sectionId: Parameters<typeof this.addSettingsLink>[0],
+    links: Array<Parameters<typeof this.addSettingsLink>[1]>
+  ) => {
     invariant(this.settings[sectionId], 'The section does not exist');
     invariant(Array.isArray(links), 'TypeError expected links to be an array');
 
@@ -336,7 +362,10 @@ class StrapiApp {
     this.hooksDict[name] = createHook();
   };
 
-  createSettingSection = (section: StrapiAppSetting, links: StrapiAppSettingLink[]) => {
+  createSettingSection = (
+    section: StrapiAppSetting,
+    links: Array<Parameters<typeof this.addSettingsLink>[1]>
+  ) => {
     invariant(section.id, 'section.id should be defined');
     invariant(
       section.intlLabel?.id && section.intlLabel?.defaultMessage,

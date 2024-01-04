@@ -119,7 +119,8 @@ describe('ADMIN | pages | SettingsPage', () => {
             intlLabel: { id: 'i18n.plugin.name', defaultMessage: 'Internationalization' },
             permissions: [],
             to: '/settings/internationalization',
-            Component: () => ({ default: () => <div>i18n settings</div> }),
+            // @ts-expect-error – this expects lazy components, but we're not doing it in the test
+            Component: () => <div>i18n settings</div>,
           },
         ],
       },
@@ -132,7 +133,8 @@ describe('ADMIN | pages | SettingsPage', () => {
             intlLabel: { id: 'email', defaultMessage: 'email' },
             permissions: [],
             to: '/settings/email-settings',
-            Component: () => ({ default: () => <div>email settings</div> }),
+            // @ts-expect-error – this expects lazy components, but we're not doing it in the test
+            Component: () => <div>email settings</div>,
           },
         ],
       },

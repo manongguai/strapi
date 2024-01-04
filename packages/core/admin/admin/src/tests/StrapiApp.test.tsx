@@ -1,3 +1,5 @@
+import { ComponentType, LazyExoticComponent } from 'react';
+
 import { render } from '@testing-library/react';
 
 import { StrapiApp } from '../StrapiApp';
@@ -194,7 +196,7 @@ describe('ADMIN | new StrapiApp', () => {
       const section = { id: 'foo', intlLabel: { id: 'foo', defaultMessage: 'foo' }, links: [] };
       const links = [
         {
-          Component: jest.fn(),
+          Component: jest.fn() as unknown as LazyExoticComponent<ComponentType>,
           to: '/bar',
           id: 'bar',
           intlLabel: { id: 'bar', defaultMessage: 'bar' },
@@ -210,7 +212,7 @@ describe('ADMIN | new StrapiApp', () => {
     it('should add a link correctly to the global section', () => {
       const app = new StrapiApp();
       const link = {
-        Component: jest.fn(),
+        Component: jest.fn() as unknown as LazyExoticComponent<ComponentType>,
         to: '/bar',
         id: 'bar',
         intlLabel: { id: 'bar', defaultMessage: 'bar' },
@@ -227,7 +229,7 @@ describe('ADMIN | new StrapiApp', () => {
       const app = new StrapiApp();
       const links = [
         {
-          Component: jest.fn(),
+          Component: jest.fn() as unknown as LazyExoticComponent<ComponentType>,
           to: '/bar',
           id: 'bar',
           intlLabel: { id: 'bar', defaultMessage: 'bar' },
@@ -463,7 +465,7 @@ describe('ADMIN | new StrapiApp', () => {
     it('addMenuLink should add a link to the menu', () => {
       const app = new StrapiApp();
       const link = {
-        Component: jest.fn(),
+        Component: jest.fn() as unknown as LazyExoticComponent<ComponentType>,
         to: '/plugins/bar',
         intlLabel: { id: 'bar', defaultMessage: 'bar' },
         permissions: [],
@@ -473,24 +475,6 @@ describe('ADMIN | new StrapiApp', () => {
       app.addMenuLink(link);
 
       expect(app.menu[0]).toBeDefined();
-      expect(app.menu[0]).toEqual(link);
-    });
-
-    it('addCorePluginMenuLink should add a link to the menu', () => {
-      const app = new StrapiApp();
-      const link = {
-        to: '/plugins/content-type-builder',
-        icon: () => <>{'book'}</>,
-        permissions: [],
-        intlLabel: {
-          id: 'content-type-builder.plugin.name',
-          defaultMessage: 'Content Type builder',
-        },
-      };
-
-      app.addCorePluginMenuLink(link);
-
-      expect(app.menu).toHaveLength(1);
       expect(app.menu[0]).toEqual(link);
     });
   });

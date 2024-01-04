@@ -69,12 +69,8 @@ export default {
       },
       id: 'internationalization',
       to: '/settings/internationalization',
-
-      async Component() {
-        const { ProtectedSettingsPage } = await import('./pages/SettingsPage');
-
-        return ProtectedSettingsPage;
-      },
+      Component: () =>
+        import('./pages/SettingsPage').then((mod) => ({ default: mod.ProtectedSettingsPage })),
       permissions: PERMISSIONS.accessMain,
     });
 

@@ -79,9 +79,11 @@ const devAliases: Record<string, string> = {
 
 const getAliases = (cwd: string, monorepo?: StrapiMonorepo) => {
   const adminAliases = getAdminDependencyAliases(monorepo);
+  console.log('monorepo', monorepo);
   const monorepoAliases = monorepo
     ? Object.fromEntries(
         Object.entries(devAliases).map(([key, modulePath]) => {
+          console.log(path.join(monorepo.path, modulePath));
           return [key, path.join(monorepo.path, modulePath)];
         })
       )

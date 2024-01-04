@@ -1,3 +1,5 @@
+import { lazy } from 'react';
+
 import { MenuItem } from '@strapi/helper-plugin';
 
 export interface Route
@@ -6,164 +8,134 @@ export interface Route
 
 export const ROUTES_CE: Route[] = [
   {
-    async Component() {
-      const { ProtectedListPage } = await import('./pages/Roles/ListPage');
-
-      return ProtectedListPage;
-    },
+    Component: lazy(() =>
+      import('./pages/Roles/ListPage').then((mod) => ({ default: mod.ProtectedListPage }))
+    ),
     to: '/settings/roles',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedCreatePage } = await import('./pages/Roles/CreatePage');
-
-      return ProtectedCreatePage;
-    },
+    Component: lazy(() =>
+      import('./pages/Roles/CreatePage').then((mod) => ({ default: mod.ProtectedCreatePage }))
+    ),
     to: '/settings/roles/duplicate/:id',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedCreatePage } = await import('./pages/Roles/CreatePage');
-
-      return ProtectedCreatePage;
-    },
+    Component: lazy(() =>
+      import('./pages/Roles/CreatePage').then((mod) => ({ default: mod.ProtectedCreatePage }))
+    ),
     to: '/settings/roles/new',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedEditPage } = await import('./pages/Roles/EditPage');
-
-      return ProtectedEditPage;
-    },
+    Component: lazy(() =>
+      import('./pages/Roles/EditPage').then((mod) => ({ default: mod.ProtectedEditPage }))
+    ),
     to: '/settings/roles/:id',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedListPage } = await import('./pages/Users/ListPage');
-
-      return ProtectedListPage;
-    },
+    Component: lazy(() =>
+      import('./pages/Users/ListPage').then((mod) => ({ default: mod.ProtectedListPage }))
+    ),
     to: '/settings/users',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedEditPage } = await import('./pages/Users/EditPage');
-
-      return ProtectedEditPage;
-    },
+    Component: lazy(() =>
+      import('./pages/Users/EditPage').then((mod) => ({ default: mod.ProtectedEditPage }))
+    ),
     to: '/settings/users/:id',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedCreatePage } = await import('./pages/Webhooks/CreatePage');
-
-      return ProtectedCreatePage;
-    },
+    Component: lazy(() =>
+      import('./pages/Webhooks/CreatePage').then((mod) => ({ default: mod.ProtectedCreatePage }))
+    ),
     to: '/settings/webhooks/create',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedEditPage } = await import('./pages/Webhooks/EditPage');
-
-      return ProtectedEditPage;
-    },
+    Component: lazy(() =>
+      import('./pages/Webhooks/EditPage').then((mod) => ({ default: mod.ProtectedEditPage }))
+    ),
     to: '/settings/webhooks/:id',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedListPage } = await import('./pages/Webhooks/ListPage');
-
-      return ProtectedListPage;
-    },
+    Component: lazy(() =>
+      import('./pages/Webhooks/ListPage').then((mod) => ({ default: mod.ProtectedListPage }))
+    ),
     to: '/settings/webhooks',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedListView } = await import('./pages/ApiTokens/ListView');
-
-      return ProtectedListView;
-    },
+    Component: lazy(() =>
+      import('./pages/ApiTokens/ListView').then((mod) => ({ default: mod.ProtectedListView }))
+    ),
     to: '/settings/api-tokens',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedCreateView } = await import('./pages/ApiTokens/CreateView');
-
-      return ProtectedCreateView;
-    },
+    Component: lazy(() =>
+      import('./pages/ApiTokens/CreateView').then((mod) => ({ default: mod.ProtectedCreateView }))
+    ),
     to: '/settings/api-tokens/create',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedEditView } = await import('./pages/ApiTokens/EditView/EditViewPage');
-
-      return ProtectedEditView;
-    },
+    Component: lazy(() =>
+      import('./pages/ApiTokens/EditView/EditViewPage').then((mod) => ({
+        default: mod.ProtectedEditView,
+      }))
+    ),
     to: '/settings/api-tokens/:id',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedCreateView } = await import('./pages/TransferTokens/CreateView');
-
-      return ProtectedCreateView;
-    },
+    Component: lazy(() =>
+      import('./pages/TransferTokens/CreateView').then((mod) => ({
+        default: mod.ProtectedCreateView,
+      }))
+    ),
     to: '/settings/transfer-tokens/create',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedListView } = await import('./pages/TransferTokens/ListView');
-
-      return ProtectedListView;
-    },
+    Component: lazy(() =>
+      import('./pages/TransferTokens/ListView').then((mod) => ({ default: mod.ProtectedListView }))
+    ),
     to: '/settings/transfer-tokens',
     exact: true,
   },
   {
-    async Component() {
-      const { ProtectedEditView } = await import('./pages/TransferTokens/EditView');
-
-      return ProtectedEditView;
-    },
+    Component: lazy(() =>
+      import('./pages/TransferTokens/EditView').then((mod) => ({ default: mod.ProtectedEditView }))
+    ),
     to: '/settings/transfer-tokens/:id',
     exact: true,
   },
   {
-    async Component() {
-      const { PurchaseAuditLogs } = await import('./pages/PurchaseAuditLogs');
-
-      return PurchaseAuditLogs;
-    },
+    Component: lazy(() =>
+      import('./pages/PurchaseAuditLogs').then((mod) => ({ default: mod.PurchaseAuditLogs }))
+    ),
     to: '/settings/purchase-audit-logs',
     exact: true,
   },
   {
-    async Component() {
-      const { PurchaseReviewWorkflows } = await import('./pages/PurchaseReviewWorkflows');
-
-      return PurchaseReviewWorkflows;
-    },
+    Component: lazy(() =>
+      import('./pages/PurchaseReviewWorkflows').then((mod) => ({
+        default: mod.PurchaseReviewWorkflows,
+      }))
+    ),
     to: '/settings/purchase-review-workflows',
     exact: true,
   },
   {
-    async Component() {
-      const { PurchaseSingleSignOn } = await import('./pages/PurchaseSingleSignOn');
-
-      return PurchaseSingleSignOn;
-    },
+    Component: lazy(() =>
+      import('./pages/PurchaseSingleSignOn').then((mod) => ({ default: mod.PurchaseSingleSignOn }))
+    ),
     to: '/settings/purchase-single-sign-on',
     exact: true,
   },

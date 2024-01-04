@@ -13,18 +13,18 @@ const Roles = () => {
   return (
     <CheckPagePermissions permissions={PERMISSIONS.accessRoles}>
       <Switch>
-        <Route
-          path="/settings/users-permissions/roles/new"
-          component={ProtectedRolesCreatePage}
-          exact
-        />
-        <Route
-          path="/settings/users-permissions/roles/:id"
-          component={ProtectedRolesEditPage}
-          exact
-        />
-        <Route path="/settings/users-permissions/roles" component={ProtectedRolesListPage} exact />
-        <Route path="" component={AnErrorOccurred} />
+        <Route path="/settings/users-permissions/roles/new" exact>
+          <ProtectedRolesCreatePage />
+        </Route>
+        <Route path="/settings/users-permissions/roles/:id" exact>
+          <ProtectedRolesEditPage />
+        </Route>
+        <Route path="/settings/users-permissions/roles" exact>
+          <ProtectedRolesListPage />
+        </Route>
+        <Route path="">
+          <AnErrorOccurred />
+        </Route>
       </Switch>
     </CheckPagePermissions>
   );

@@ -31,9 +31,11 @@ describe('PrivateRoute', () => {
     render(
       <>
         <Route path="/auth/login" component={LoginPage} />
-        <PrivateRoute path="/">
-          <ProtectedPage />
-        </PrivateRoute>
+        <Route path="/">
+          <PrivateRoute>
+            <ProtectedPage />
+          </PrivateRoute>
+        </Route>
       </>,
       {
         initialEntries: ['/protected'],
@@ -51,9 +53,11 @@ describe('PrivateRoute', () => {
     render(
       <>
         <Route path="/auth/login" component={LoginPage} />
-        <PrivateRoute path="/protected">
-          <ProtectedPage />
-        </PrivateRoute>
+        <Route path="/protected">
+          <PrivateRoute>
+            <ProtectedPage />
+          </PrivateRoute>
+        </Route>
         <Route
           path="*"
           render={({ history, location }) => {

@@ -14,31 +14,40 @@ jest.mock('../pages/ApplicationInfo/ApplicationInfoPage', () => ({
 }));
 
 const render = (settings: StrapiAppProviderProps['settings']) =>
-  baseRender(<Route path="/settings/:settingId" component={SettingsPage} />, {
-    initialEntries: ['/settings/application-infos'],
-    renderOptions: {
-      wrapper({ children }) {
-        return (
-          <AppInfoContext.Provider
-            value={{ shouldUpdateStrapi: false, setUserDisplayName: () => {}, userDisplayName: '' }}
-          >
-            <StrapiAppProvider
-              settings={settings}
-              plugins={{}}
-              getPlugin={jest.fn()}
-              getAdminInjectedComponents={jest.fn()}
-              runHookParallel={jest.fn()}
-              runHookWaterfall={jest.fn()}
-              runHookSeries={jest.fn()}
-              menu={[]}
+  baseRender(
+    <Route path="/settings/:settingId">
+      <SettingsPage />
+    </Route>,
+    {
+      initialEntries: ['/settings/application-infos'],
+      renderOptions: {
+        wrapper({ children }) {
+          return (
+            <AppInfoContext.Provider
+              value={{
+                shouldUpdateStrapi: false,
+                setUserDisplayName: () => {},
+                userDisplayName: '',
+              }}
             >
-              {children}
-            </StrapiAppProvider>
-          </AppInfoContext.Provider>
-        );
+              <StrapiAppProvider
+                settings={settings}
+                plugins={{}}
+                getPlugin={jest.fn()}
+                getAdminInjectedComponents={jest.fn()}
+                runHookParallel={jest.fn()}
+                runHookWaterfall={jest.fn()}
+                runHookSeries={jest.fn()}
+                menu={[]}
+              >
+                {children}
+              </StrapiAppProvider>
+            </AppInfoContext.Provider>
+          );
+        },
       },
-    },
-  });
+    }
+  );
 
 describe('ADMIN | pages | SettingsPage', () => {
   it('should redirect to the application-infos', async () => {

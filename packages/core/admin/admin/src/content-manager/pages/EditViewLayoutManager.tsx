@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { LoadingIndicatorPage, useQueryParams, useStrapiApp } from '@strapi/helper-plugin';
 import produce from 'immer';
+import { useParams } from 'react-router-dom';
 
 import { HOOKS } from '../../constants';
 import { useTypedDispatch, useTypedSelector } from '../../core/store/hooks';
@@ -27,11 +28,8 @@ const EditViewLayoutManager = ({ layout, ...rest }: EditViewLayoutManagerProps) 
   const dispatch = useTypedDispatch();
   const [{ query }] = useQueryParams();
   const { runHookWaterfall } = useStrapiApp();
-  const { permissions, isValid: isValidPermissions } = useSyncRbac(
-    query,
-    rest.match.params.slug,
-    'editView'
-  );
+  const { slug } = useParams<{ slug: string }>();
+  const { permissions, isValid: isValidPermissions } = useSyncRbac(query, slug, 'editView');
 
   React.useEffect(() => {
     // Allow the plugins to extend the edit view layout

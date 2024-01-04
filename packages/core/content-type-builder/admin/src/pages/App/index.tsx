@@ -44,14 +44,16 @@ const App = () => {
             <Suspense fallback={<LoadingIndicatorPage />}>
               <Switch>
                 <Route
-                  path={`/plugins/${pluginId}/content-types/create-content-type`}
-                  component={ListView}
-                />
-                <Route path={`/plugins/${pluginId}/content-types/:uid`} component={ListView} />
-                <Route
-                  path={`/plugins/${pluginId}/component-categories/:categoryUid`}
-                  component={RecursivePath}
-                />
+                  path={[
+                    `/plugins/${pluginId}/content-types/create-content-type`,
+                    `/plugins/${pluginId}/content-types/:uid`,
+                  ]}
+                >
+                  <ListView />
+                </Route>
+                <Route path={`/plugins/${pluginId}/component-categories/:categoryUid`}>
+                  <RecursivePath />
+                </Route>
               </Switch>
             </Suspense>
           </Layout>

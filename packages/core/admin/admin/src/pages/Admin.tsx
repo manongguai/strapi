@@ -18,7 +18,7 @@ import { useConfiguration } from '../features/Configuration';
 import { useMenu } from '../hooks/useMenu';
 import { useOnce } from '../hooks/useOnce';
 import { AppLayout } from '../layouts/AppLayout';
-import { createRoute } from '../utils/createRoute';
+import { LazyCompo } from '../utils/createRoute';
 
 const CM = React.lazy(() =>
   import('../content-manager/pages/App').then((mod) => ({ default: mod.App }))
@@ -72,15 +72,6 @@ const Admin = () => {
     trackUsage('didAccessAuthenticatedAdministration');
   });
 
-  const routes = React.useMemo(() => {
-    return (
-      menu
-        .filter((link) => link.Component)
-        // we've filtered out the links that don't have a component above
-        .map(({ to, Component, exact }) => createRoute(Component!, to, exact))
-    );
-  }, [menu]);
-
   if (isLoading) {
     return <LoadingIndicatorPage />;
   }
@@ -97,21 +88,46 @@ const Admin = () => {
       >
         <React.Suspense fallback={<LoadingIndicatorPage />}>
           <Switch>
-            <Route path="/" component={HomePage} exact />
-            <Route path="/me" component={ProfilePage} exact />
-            <Route path="/content-manager" component={CM} />
-            {routes}
-            <Route path="/settings/:settingId" component={SettingsPage} />
-            <Route path="/settings" component={SettingsPage} exact />
+            <Route path="/" exact>
+              <HomePage />
+            </Route>
+            <Route path="/me" exact>
+              <ProfilePage />
+            </Route>
+            <Route path="/content-manager">
+              <CM />
+            </Route>
+            {menu
+              .filter((link) => link.Component)
+              .map(({ to, Component, exact }) => (
+                <Route
+                  // TODO: convert this in the spirit of https://github.com/strapi/strapi/pull/17685
+                  key={to}
+                  path={to}
+                  exact={exact || false}
+                >
+                  {/* we've filtered out the links that don't have a component above */}
+                  <LazyCompo loadComponent={Component!} />
+                </Route>
+              ))}
+            <Route path={['/settings', '/settings/:settingId']} exact>
+              <SettingsPage />
+            </Route>
             <Route path="/marketplace">
               <MarketplacePage />
             </Route>
             <Route path="/list-plugins" exact>
               <InstalledPluginsPage />
             </Route>
-            <Route path="/404" component={NotFoundPage} />
-            <Route path="/500" component={InternalErrorPage} />
-            <Route path="" component={NotFoundPage} />
+            <Route path="/404">
+              <NotFoundPage />
+            </Route>
+            <Route path="/500">
+              <InternalErrorPage />
+            </Route>
+            <Route path="">
+              <NotFoundPage />
+            </Route>
           </Switch>
         </React.Suspense>
         <GuidedTourModal />

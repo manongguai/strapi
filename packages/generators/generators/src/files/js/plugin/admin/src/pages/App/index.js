@@ -15,8 +15,12 @@ const App = () => {
   return (
     <div>
       <Switch>
-        <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
-        <Route component={AnErrorOccurred} />
+        <Route path={`/plugins/${pluginId}`} exact>
+          <HomePage />
+        </Route>
+        <Route>
+          <AnErrorOccurred />
+        </Route>
       </Switch>
     </div>
   );

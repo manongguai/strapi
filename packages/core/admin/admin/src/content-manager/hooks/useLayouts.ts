@@ -8,7 +8,7 @@ import { useTypedSelector } from '../../core/store/hooks';
 import { selectSchemas } from '../pages/App';
 import { formatLayouts } from '../utils/layouts';
 
-const useContentTypeLayout = (contentTypeUID: string) => {
+const useContentTypeLayout = (contentTypeUID: string = '') => {
   const schemas = useTypedSelector(selectSchemas);
   const { get } = useFetchClient();
 

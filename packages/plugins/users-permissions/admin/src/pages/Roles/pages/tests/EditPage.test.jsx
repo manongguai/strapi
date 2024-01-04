@@ -21,31 +21,36 @@ jest.mock('@strapi/helper-plugin', () => ({
 }));
 
 const render = () => ({
-  ...renderRTL(<Route path="/settings/users-permissions/roles/:id" component={EditPage} />, {
-    wrapper({ children }) {
-      const client = new QueryClient({
-        defaultOptions: {
-          queries: {
-            retry: false,
+  ...renderRTL(
+    <Route path="/settings/users-permissions/roles/:id">
+      <EditPage />
+    </Route>,
+    {
+      wrapper({ children }) {
+        const client = new QueryClient({
+          defaultOptions: {
+            queries: {
+              retry: false,
+            },
           },
-        },
-      });
+        });
 
-      return (
-        <IntlProvider locale="en" messages={{}} textComponent="span">
-          <ThemeProvider theme={lightTheme}>
-            <QueryClientProvider client={client}>
-              <NotificationsProvider>
-                <MemoryRouter initialEntries={[`/settings/users-permissions/roles/1`]}>
-                  <Switch>{children}</Switch>
-                </MemoryRouter>
-              </NotificationsProvider>
-            </QueryClientProvider>
-          </ThemeProvider>
-        </IntlProvider>
-      );
-    },
-  }),
+        return (
+          <IntlProvider locale="en" messages={{}} textComponent="span">
+            <ThemeProvider theme={lightTheme}>
+              <QueryClientProvider client={client}>
+                <NotificationsProvider>
+                  <MemoryRouter initialEntries={[`/settings/users-permissions/roles/1`]}>
+                    <Switch>{children}</Switch>
+                  </MemoryRouter>
+                </NotificationsProvider>
+              </QueryClientProvider>
+            </ThemeProvider>
+          </IntlProvider>
+        );
+      },
+    }
+  ),
   user: userEvent.setup(),
 });
 

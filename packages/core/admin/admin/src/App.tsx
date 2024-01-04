@@ -30,7 +30,7 @@ import { UseCasePage } from './pages/UseCasePage';
 import { setAdminPermissions } from './reducer';
 import { useInitQuery, useTelemetryPropertiesQuery } from './services/admin';
 import { PermissionMap } from './types/permissions';
-import { createRoute } from './utils/createRoute';
+import { LazyCompo } from './utils/createRoute';
 
 type StrapiRoute = Pick<MenuItem, 'exact' | 'to'> & Required<Pick<MenuItem, 'Component'>>;
 
@@ -71,14 +71,6 @@ export const App = ({ authLogo, menuLogo, showReleaseNotification, showTutorials
   const dispatch = useDispatch();
   const appInfo = useAppInfo();
   const token = useAuth('App', (state) => state.token);
-
-  const authRoutes = React.useMemo(() => {
-    if (!routes) {
-      return null;
-    }
-
-    return routes.map(({ to, Component, exact }) => createRoute(Component, to, exact));
-  }, [routes]);
 
   React.useEffect(() => {
     dispatch(setAdminPermissions(adminPermissions));
@@ -164,19 +156,35 @@ export const App = ({ authLogo, menuLogo, showReleaseNotification, showTutorials
       >
         <TrackingProvider value={trackingInfo}>
           <Switch>
-            {authRoutes}
-            <Route
-              path="/auth/:authType"
-              render={(routerProps) => <AuthPage {...routerProps} hasAdmin={Boolean(hasAdmin)} />}
-              exact
-            />
-            <PrivateRoute path="/usecase">
-              <UseCasePage />
-            </PrivateRoute>
-            <PrivateRoute path="/">
-              <AuthenticatedApp />
-            </PrivateRoute>
-            <Route path="" component={NotFoundPage} />
+            {
+              // it won't be null because the default value is []
+              routes!.map(({ to, Component, exact }) => (
+                <Route
+                  // TODO: convert this in the spirit of https://github.com/strapi/strapi/pull/17685
+                  key={to}
+                  path={to}
+                  exact={exact || false}
+                >
+                  <LazyCompo loadComponent={Component} />
+                </Route>
+              ))
+            }
+            <Route path="/auth/:authType" exact>
+              <AuthPage hasAdmin={Boolean(hasAdmin)} />
+            </Route>
+            <Route path="/usecase">
+              <PrivateRoute>
+                <UseCasePage />
+              </PrivateRoute>
+            </Route>
+            <Route path="/">
+              <PrivateRoute>
+                <AuthenticatedApp />
+              </PrivateRoute>
+            </Route>
+            <Route path="">
+              <NotFoundPage />
+            </Route>
           </Switch>
         </TrackingProvider>
       </ConfigurationProvider>

@@ -121,22 +121,24 @@ const App = () => {
             </CheckPagePermissions>
           </Route>
           {/* These redirects exist because we've changed to use the same term in `:collectionType` as the admin API for simplicity */}
-          <Redirect
-            from="/content-manager/collectionType/:slug"
-            to="/content-manager/collection-types/:slug"
-          />
-          <Redirect
-            from="/content-manager/singleType/:slug"
-            to="/content-manager/single-types/:slug"
-          />
-          <Route path="/content-manager/:collectionType/:slug" component={CollectionTypePages} />
+          <Route path="/content-manager/collectionType/:slug">
+            <Redirect to="/content-manager/collection-types/:slug" />
+          </Route>
+          <Route path="/content-manager/singleType/:slug">
+            <Redirect to="/content-manager/single-types/:slug" />
+          </Route>
+          <Route path="/content-manager/:collectionType/:slug">
+            <CollectionTypePages />
+          </Route>
           <Route path="/content-manager/403">
             <NoPermissions />
           </Route>
           <Route path="/content-manager/no-content-types">
             <NoContentType />
           </Route>
-          <Route path="" component={AnErrorOccurred} />
+          <Route path="">
+            <AnErrorOccurred />
+          </Route>
         </Switch>
       </Layout>
     </>

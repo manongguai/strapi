@@ -38,7 +38,10 @@ const LazyCompo = ({ loadComponent }: LazyCompoProps) => {
   return <LoadingIndicatorPage />;
 };
 
-export const createRoute = (
+/**
+ * @deprecated – do not use.
+ */
+const createRoute = (
   loadComponent: LazyCompoProps['loadComponent'],
   to: MenuItem['to'],
   exact: MenuItem['exact'] = false
@@ -52,3 +55,5 @@ export const createRoute = (
     />
   );
 };
+
+export { LazyCompo, createRoute };

@@ -6,7 +6,7 @@
 import * as React from 'react';
 
 import { CheckPagePermissions, LoadingIndicatorPage } from '@strapi/helper-plugin';
-import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import { useTypedSelector } from '../../core/store/hooks';
 import { NotFoundPage } from '../../pages/NotFoundPage';
@@ -24,20 +24,15 @@ import { EditViewLayoutManager } from './EditViewLayoutManager';
 import { ListSettingsView } from './ListSettingsView';
 import { ListViewLayoutManager } from './ListViewLayoutManager';
 
-interface CollectionTypePagesProps
-  extends RouteComponentProps<{ collectionType: string; slug: string }> {}
-
-const CollectionTypePages = (props: CollectionTypePagesProps) => {
-  const {
-    match: {
-      params: { collectionType, slug },
-      path,
-    },
-  } = props;
+const CollectionTypePages = () => {
+  const match = useRouteMatch<{
+    collectionType: 'collection-types' | 'single-types';
+    slug: string;
+  }>('/content-manager/:collectionType/:slug');
 
   const permissions = useTypedSelector((state) => state.admin_app.permissions);
 
-  const { isLoading, layout, updateLayout } = useContentTypeLayout(slug);
+  const { isLoading, layout, updateLayout } = useContentTypeLayout(match?.params.slug);
 
   const { rawContentTypeLayout, rawComponentsLayouts } = React.useMemo(() => {
     let rawContentTypeLayout: SettingsViewContentTypeLayout | null = null;
@@ -63,13 +58,22 @@ const CollectionTypePages = (props: CollectionTypePagesProps) => {
   /**
    * We only support two types of collections.
    */
-  if (collectionType !== 'collection-types' && collectionType !== 'single-types') {
+  if (
+    !match ||
+    (match.params.collectionType !== 'collection-types' &&
+      match.params.collectionType !== 'single-types')
+  ) {
     return <NotFoundPage />;
   }
 
   if (isLoading || !layout) {
     return <LoadingIndicatorPage />;
   }
+
+  const {
+    path,
+    params: { collectionType, slug },
+  } = match;
 
   /**
    * We do this cast so the params are correctly inferred on the render props.
@@ -78,17 +82,13 @@ const CollectionTypePages = (props: CollectionTypePagesProps) => {
 
   return (
     <Switch>
-      <Route
-        path={currentPath}
-        exact
-        render={(props) =>
-          collectionType === 'collection-types' ? (
-            <ListViewLayoutManager slug={slug} layout={layout} />
-          ) : (
-            <EditViewLayoutManager layout={layout} {...props} />
-          )
-        }
-      />
+      <Route path={currentPath} exact>
+        {collectionType === 'collection-types' ? (
+          <ListViewLayoutManager slug={slug} layout={layout} />
+        ) : (
+          <EditViewLayoutManager layout={layout} />
+        )}
+      </Route>
       <Route exact path={`${currentPath}/configurations/edit`}>
         <CheckPagePermissions
           permissions={permissions.contentManager?.collectionTypesConfigurations}
@@ -115,16 +115,12 @@ const CollectionTypePages = (props: CollectionTypePagesProps) => {
               />
             </CheckPagePermissions>
           </Route>
-          <Route
-            path={`${currentPath}/create/clone/:origin`}
-            exact
-            render={(props) => <EditViewLayoutManager layout={layout} {...props} />}
-          />
-          <Route
-            path={[`${currentPath}/create`, `${currentPath}/:id`]}
-            exact
-            render={(props) => <EditViewLayoutManager layout={layout} {...props} />}
-          />
+          <Route path={`${currentPath}/create/clone/:origin`} exact>
+            <EditViewLayoutManager layout={layout} />
+          </Route>
+          <Route path={[`${currentPath}/create`, `${currentPath}/:id`]} exact>
+            <EditViewLayoutManager layout={layout} />
+          </Route>
         </>
       ) : null}
     </Switch>

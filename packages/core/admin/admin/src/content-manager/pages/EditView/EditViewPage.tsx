@@ -15,7 +15,7 @@ import {
 import { Layer, Pencil } from '@strapi/icons';
 import { Attribute } from '@strapi/types';
 import { useIntl } from 'react-intl';
-import { RouteComponentProps, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { InjectionZone } from '../../../components/InjectionZone';
 import { useTypedSelector } from '../../../core/store/hooks';
@@ -55,23 +55,18 @@ interface EditViewPageParams {
   origin?: string;
 }
 
-interface EditViewPageProps extends RouteComponentProps<EditViewPageParams> {
+interface EditViewPageProps {
   allowedActions: AllowedActions;
   userPermissions?: Permission[];
 }
 
-const EditViewPage = ({
-  allowedActions,
-  history: { goBack },
-  match: {
-    params: { slug, collectionType, id, origin },
-  },
-  userPermissions = [],
-}: EditViewPageProps) => {
+const EditViewPage = ({ allowedActions, userPermissions = [] }: EditViewPageProps) => {
+  const { goBack } = useHistory();
+  const location = useLocation<{ error?: string }>();
+  const { slug, collectionType, id, origin } = useParams<EditViewPageParams>();
   const { trackUsage } = useTracking();
   const { formatMessage } = useIntl();
   const permissions = useTypedSelector((state) => state.admin_app.permissions);
-  const location = useLocation<{ error?: string }>();
   const toggleNotification = useNotification();
   const Information = useEnterprise(
     InformationBoxCE,
@@ -432,10 +427,8 @@ const ProtectedEditViewPage = ({
   userPermissions = [],
   ...restProps
 }: ProtectedEditViewPageProps) => {
-  const viewPermissions = React.useMemo(
-    () => generatePermissionsObject(restProps.match.params.slug),
-    [restProps.match.params.slug]
-  );
+  const { slug } = useParams<EditViewPageParams>();
+  const viewPermissions = React.useMemo(() => generatePermissionsObject(slug), [slug]);
   const { isLoading, allowedActions } = useRBAC(
     viewPermissions,
     // TODO: just make usePermissions undefined by default in the reducer?

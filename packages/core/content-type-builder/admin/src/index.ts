@@ -15,7 +15,8 @@ export default {
   register(app: any) {
     app.addReducers(reducers);
     app.addMenuLink({
-      to: `/plugins/${pluginId}`,
+      to: `plugins/${pluginId}`,
+      path: `plugins/${pluginId}/*`,
       icon: PluginIcon,
       intlLabel: {
         id: `${pluginId}.plugin.name`,

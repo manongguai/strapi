@@ -15,8 +15,10 @@ import {
   Typography,
 } from '@strapi/design-system';
 import {
+  CheckPagePermissions,
   ConfirmDialog,
   Link,
+  LoadingIndicatorPage,
   useFetchClient,
   useNotification,
   useTracking,
@@ -25,12 +27,13 @@ import { ArrowLeft, Check } from '@strapi/icons';
 import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import upperFirst from 'lodash/upperFirst';
-import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import { useMutation } from 'react-query';
-import { useHistory } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useTypedSelector } from '../../../core/store/hooks';
+import { useContentTypeLayout } from '../../hooks/useLayouts';
+import { formatLayoutForSettingsView } from '../../utils/layouts';
 import { getTranslation } from '../../utils/translations';
 
 import DisplayedFields from './components/DisplayedFields';
@@ -40,14 +43,37 @@ import init from './init';
 import reducer, { initialState } from './reducer';
 import { unformatLayout } from './utils/layout';
 
-const EditSettingsView = ({ mainLayout, components, isContentTypeView, slug, updateLayout }) => {
+const EditSettingsView = () => {
+  const { slug } = useParams();
+  const { isLoading, layout, updateLayout } = useContentTypeLayout(slug);
+
+  const { rawContentTypeLayout: mainLayout, rawComponentsLayouts: components } =
+    React.useMemo(() => {
+      let rawContentTypeLayout = null;
+      let rawComponentsLayouts = null;
+
+      if (layout?.contentType) {
+        rawContentTypeLayout = formatLayoutForSettingsView(layout.contentType);
+      }
+
+      if (layout?.components) {
+        rawComponentsLayouts = Object.keys(layout.components).reduce((acc, current) => {
+          acc[current] = formatLayoutForSettingsView(layout.components[current]);
+
+          return acc;
+        }, {});
+      }
+
+      return { rawContentTypeLayout, rawComponentsLayouts };
+    }, [layout]);
+
   const [reducerState, dispatch] = useReducer(reducer, initialState, () =>
     init(initialState, mainLayout, components)
   );
   const [isDraggingSibling, setIsDraggingSibling] = useState(false);
   const { trackUsage } = useTracking();
   const toggleNotification = useNotification();
-  const { goBack } = useHistory();
+  const navigate = useNavigate();
   const [isModalFormOpen, setIsModalFormOpen] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { componentLayouts, initialData, modifiedData, metaToEdit, metaForm } = reducerState;
@@ -130,12 +156,7 @@ const EditSettingsView = ({ mainLayout, components, isContentTypeView, slug, upd
 
   const submitMutation = useMutation(
     (body) => {
-      return put(
-        isContentTypeView
-          ? `/content-manager/content-types/${slug}/configuration`
-          : `/content-manager/components/${slug}/configuration`,
-        body
-      );
+      return put(`/content-manager/content-types/${slug}/configuration`, body);
     },
     {
       onSuccess({ data }) {
@@ -211,9 +232,13 @@ const EditSettingsView = ({ mainLayout, components, isContentTypeView, slug, upd
     });
   };
 
+  if (isLoading) {
+    return <LoadingIndicatorPage />;
+  }
+
   return (
     <LayoutDndProvider
-      isContentTypeView={isContentTypeView}
+      isContentTypeView
       attributes={attributes}
       modifiedData={modifiedData}
       slug={slug}
@@ -251,13 +276,14 @@ const EditSettingsView = ({ mainLayout, components, isContentTypeView, slug, upd
               defaultMessage: 'Customize how the edit view will look like.',
             })}
             navigationAction={
+              // eslint-disable-next-line jsx-a11y/anchor-is-valid
               <Link
                 startIcon={<ArrowLeft />}
                 onClick={(e) => {
                   e.preventDefault();
-                  goBack();
+                  navigate(-1);
                 }}
-                to="/"
+                to=""
               >
                 {formatMessage({
                   id: 'global.back',
@@ -383,26 +409,16 @@ const EditSettingsView = ({ mainLayout, components, isContentTypeView, slug, upd
   );
 };
 
-EditSettingsView.defaultProps = {
-  isContentTypeView: false,
-  updateLayout: null,
+const ProtectedEditSettingsView = () => {
+  const permissions = useTypedSelector(
+    (state) => state.admin_app.permissions.contentManager?.collectionTypesConfigurations
+  );
+
+  return (
+    <CheckPagePermissions permissions={permissions}>
+      <EditSettingsView />
+    </CheckPagePermissions>
+  );
 };
 
-EditSettingsView.propTypes = {
-  components: PropTypes.object.isRequired,
-  isContentTypeView: PropTypes.bool,
-  mainLayout: PropTypes.shape({
-    attributes: PropTypes.object.isRequired,
-    info: PropTypes.object.isRequired,
-    layouts: PropTypes.shape({
-      list: PropTypes.array.isRequired,
-      edit: PropTypes.array.isRequired,
-    }).isRequired,
-    metadatas: PropTypes.object.isRequired,
-    options: PropTypes.object.isRequired,
-  }).isRequired,
-  slug: PropTypes.string.isRequired,
-  updateLayout: PropTypes.func,
-};
-
-export default EditSettingsView;
+export { ProtectedEditSettingsView, EditSettingsView };

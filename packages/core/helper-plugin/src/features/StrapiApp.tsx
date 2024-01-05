@@ -5,6 +5,11 @@ import { TranslationMessage } from '../types';
 import type { Permission } from './RBAC';
 
 interface MenuItem {
+  /**
+   * When available, this takes precedence over the `to` property
+   * for defining the route of the Component.
+   */
+  path?: string;
   to: string;
   icon: React.ElementType;
   intlLabel: TranslationMessage;
@@ -15,7 +20,6 @@ interface MenuItem {
   permissions: Permission[];
   notificationsCount?: number;
   Component: React.LazyExoticComponent<React.ComponentType>;
-  exact?: boolean;
 }
 
 /* -------------------------------------------------------------------------------------------------

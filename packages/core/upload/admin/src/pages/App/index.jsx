@@ -4,10 +4,9 @@ import { Main } from '@strapi/design-system';
 import { LoadingIndicatorPage, useFocusWhenNavigate, useQueryParams } from '@strapi/helper-plugin';
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { useConfig } from '../../hooks/useConfig';
-import pluginID from '../../pluginId';
 import { getTrad } from '../../utils';
 
 import { MediaLibrary } from './MediaLibrary';
@@ -38,14 +37,10 @@ const Upload = () => {
       {isLoading && <LoadingIndicatorPage />}
       {rawQuery ? (
         <Suspense fallback={<LoadingIndicatorPage />}>
-          <Switch>
-            <Route exact path={`/plugins/${pluginID}`}>
-              <MediaLibrary />
-            </Route>
-            <Route exact path={`/plugins/${pluginID}/configuration`}>
-              <ConfigureTheView config={config} />
-            </Route>
-          </Switch>
+          <Routes>
+            <Route exact path="/" element={<MediaLibrary />} />
+            <Route exact path="configuration" element={<ConfigureTheView config={config} />} />
+          </Routes>
         </Suspense>
       ) : null}
     </Main>

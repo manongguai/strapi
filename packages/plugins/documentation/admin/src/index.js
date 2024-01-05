@@ -11,7 +11,7 @@ const name = pluginPkg.strapi.name;
 export default {
   register(app) {
     app.addMenuLink({
-      to: `/plugins/${pluginId}`,
+      to: `plugins/${pluginId}`,
       icon: Information,
       intlLabel: {
         id: `${pluginId}.plugin.name`,
@@ -33,7 +33,7 @@ export default {
         defaultMessage: 'Documentation',
       },
       id: 'documentation',
-      to: `/settings/${pluginId}`,
+      to: pluginId,
       Component: () => import('./pages/SettingsPage'),
       permissions: PERMISSIONS.main,
     });

@@ -11,7 +11,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from 'react-intl';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { MemoryRouter, Switch, Route } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
 import { EditPage } from '../EditPage';
 
@@ -41,7 +41,7 @@ const render = () => ({
               <QueryClientProvider client={client}>
                 <NotificationsProvider>
                   <MemoryRouter initialEntries={[`/settings/users-permissions/roles/1`]}>
-                    <Switch>{children}</Switch>
+                    <Routes>{children}</Routes>
                   </MemoryRouter>
                 </NotificationsProvider>
               </QueryClientProvider>

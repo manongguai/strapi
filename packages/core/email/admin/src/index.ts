@@ -21,7 +21,7 @@ const admin: Plugin.Config.AdminInput = {
             defaultMessage: 'Settings',
           },
           id: 'settings',
-          to: `/settings/email`,
+          to: 'email',
           Component: () =>
             import('./pages/Settings').then((mod) => ({
               default: mod.ProtectedSettingsPage,

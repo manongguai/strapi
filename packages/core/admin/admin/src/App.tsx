@@ -9,7 +9,6 @@ import * as React from 'react';
 import { SkipToContent } from '@strapi/design-system';
 import {
   LoadingIndicatorPage,
-  MenuItem,
   TrackingProvider,
   useAppInfo,
   useNotification,
@@ -17,27 +16,15 @@ import {
 import merge from 'lodash/merge';
 import { useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-import { PrivateRoute } from './components/PrivateRoute';
 import { ADMIN_PERMISSIONS_CE } from './constants';
 import { useAuth } from './features/Auth';
 import { ConfigurationProvider, ConfigurationProviderProps } from './features/Configuration';
 import { useEnterprise } from './hooks/useEnterprise';
-import { AuthPage } from './pages/Auth/AuthPage';
-import { NotFoundPage } from './pages/NotFoundPage';
-import { UseCasePage } from './pages/UseCasePage';
 import { setAdminPermissions } from './reducer';
 import { useInitQuery, useTelemetryPropertiesQuery } from './services/admin';
 import { PermissionMap } from './types/permissions';
-
-type StrapiRoute = Pick<MenuItem, 'exact' | 'to'> & Required<Pick<MenuItem, 'Component'>>;
-
-const ROUTES_CE: StrapiRoute[] | null = null;
-
-const AuthenticatedApp = React.lazy(() =>
-  import('./components/AuthenticatedApp').then((mod) => ({ default: mod.AuthenticatedApp }))
-);
 
 interface AppProps extends Omit<ConfigurationProviderProps, 'children' | 'authLogo' | 'menuLogo'> {
   authLogo: string;
@@ -58,13 +45,7 @@ export const App = ({ authLogo, menuLogo, showReleaseNotification, showTutorials
       defaultValue: ADMIN_PERMISSIONS_CE,
     }
   );
-  const routes = useEnterprise(
-    ROUTES_CE,
-    async () => (await import('../../ee/admin/src/constants')).ROUTES_EE,
-    {
-      defaultValue: [],
-    }
-  );
+
   const toggleNotification = useNotification();
   const { formatMessage } = useIntl();
   const dispatch = useDispatch();
@@ -76,12 +57,7 @@ export const App = ({ authLogo, menuLogo, showReleaseNotification, showTutorials
   }, [adminPermissions, dispatch]);
 
   const initQuery = useInitQuery();
-  const {
-    hasAdmin,
-    uuid,
-    authLogo: customAuthLogo,
-    menuLogo: customMenuLogo,
-  } = initQuery.data ?? {};
+  const { uuid, authLogo: customAuthLogo, menuLogo: customMenuLogo } = initQuery.data ?? {};
 
   const telemetryPropertiesQuery = useTelemetryPropertiesQuery(undefined, {
     skip: !uuid || !token,
@@ -154,39 +130,7 @@ export const App = ({ authLogo, menuLogo, showReleaseNotification, showTutorials
         showTutorials={showTutorials}
       >
         <TrackingProvider value={trackingInfo}>
-          <Switch>
-            {
-              // it won't be null because the default value is []
-              routes!.map(({ to, Component, exact }) => (
-                <Route
-                  // TODO: convert this in the spirit of https://github.com/strapi/strapi/pull/17685
-                  key={to}
-                  path={to}
-                  exact={exact || false}
-                >
-                  <React.Suspense fallback={<LoadingIndicatorPage />}>
-                    <Component />
-                  </React.Suspense>
-                </Route>
-              ))
-            }
-            <Route path="/auth/:authType" exact>
-              <AuthPage hasAdmin={Boolean(hasAdmin)} />
-            </Route>
-            <Route path="/usecase">
-              <PrivateRoute>
-                <UseCasePage />
-              </PrivateRoute>
-            </Route>
-            <Route path="/">
-              <PrivateRoute>
-                <AuthenticatedApp />
-              </PrivateRoute>
-            </Route>
-            <Route path="">
-              <NotFoundPage />
-            </Route>
-          </Switch>
+          <Outlet />
         </TrackingProvider>
       </ConfigurationProvider>
     </React.Suspense>

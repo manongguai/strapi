@@ -25,10 +25,10 @@ export default {
             defaultMessage: 'Roles',
           },
           id: 'roles',
-          to: `/settings/users-permissions/roles`,
+          to: `users-permissions/roles`,
+          path: `users-permissions/roles/*`,
           Component: () => import('./pages/Roles'),
           permissions: PERMISSIONS.accessRoles,
-          exact: true,
         },
         {
           intlLabel: {
@@ -36,10 +36,9 @@ export default {
             defaultMessage: 'Providers',
           },
           id: 'providers',
-          to: `/settings/users-permissions/providers`,
+          to: `users-permissions/providers`,
           Component: () => import('./pages/Providers'),
           permissions: PERMISSIONS.readProviders,
-          exact: true,
         },
         {
           intlLabel: {
@@ -47,10 +46,9 @@ export default {
             defaultMessage: 'Email templates',
           },
           id: 'email-templates',
-          to: `/settings/users-permissions/email-templates`,
+          to: `users-permissions/email-templates`,
           Component: () => import('./pages/EmailTemplates'),
           permissions: PERMISSIONS.readEmailTemplates,
-          exact: true,
         },
         {
           intlLabel: {
@@ -58,10 +56,9 @@ export default {
             defaultMessage: 'Advanced Settings',
           },
           id: 'advanced-settings',
-          to: `/settings/users-permissions/advanced-settings`,
+          to: `users-permissions/advanced-settings`,
           Component: () => import('./pages/AdvancedSettings'),
           permissions: PERMISSIONS.readAdvancedSettings,
-          exact: true,
         },
       ]
     );

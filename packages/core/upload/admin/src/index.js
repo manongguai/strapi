@@ -14,7 +14,7 @@ const name = pluginPkg.strapi.name;
 export default {
   register(app) {
     app.addMenuLink({
-      to: `/plugins/${pluginId}`,
+      to: `plugins/${pluginId}`,
       icon: PluginIcon,
       intlLabel: {
         id: `${pluginId}.plugin.name`,
@@ -24,24 +24,23 @@ export default {
       Component: () => import('./pages/App'),
     });
 
-    app.addFields({ type: 'media', Component: MediaLibraryInput });
-    app.addComponents([{ name: 'media-library', Component: MediaLibraryDialog }]);
-
-    app.registerPlugin({
-      id: pluginId,
-      name,
-    });
-  },
-  bootstrap(app) {
     app.addSettingsLink('global', {
       id: 'media-library-settings',
       intlLabel: {
         id: getTrad('plugin.name'),
         defaultMessage: 'Media Library',
       },
-      to: '/settings/media-library',
+      to: 'media-library',
       Component: () => import('./pages/SettingsPage'),
       permissions: PERMISSIONS.settings,
+    });
+
+    app.addFields({ type: 'media', Component: MediaLibraryInput });
+    app.addComponents([{ name: 'media-library', Component: MediaLibraryDialog }]);
+
+    app.registerPlugin({
+      id: pluginId,
+      name,
     });
   },
   async registerTrads({ locales }) {

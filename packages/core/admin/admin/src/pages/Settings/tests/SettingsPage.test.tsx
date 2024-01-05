@@ -3,7 +3,7 @@ import { render as baseRender, screen } from '@tests/utils';
 import { Route } from 'react-router-dom';
 
 import { useSettingsMenu } from '../../../hooks/useSettingsMenu';
-import { SettingsPage } from '../SettingsPage';
+import { SettingsPage } from '../Layout';
 
 jest.mock('../../../hooks/useSettingsMenu');
 

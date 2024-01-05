@@ -68,7 +68,7 @@ export default {
         defaultMessage: 'Internationalization',
       },
       id: 'internationalization',
-      to: '/settings/internationalization',
+      to: 'internationalization',
       Component: () =>
         import('./pages/SettingsPage').then((mod) => ({ default: mod.ProtectedSettingsPage })),
       permissions: PERMISSIONS.accessMain,

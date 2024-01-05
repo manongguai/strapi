@@ -6,7 +6,7 @@
  */
 
 import { AnErrorOccurred } from '@strapi/helper-plugin';
-import { Switch, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import { pluginId } from '../pluginId';
 
@@ -15,14 +15,14 @@ import { HomePage } from './HomePage';
 const App = () => {
   return (
     <div>
-      <Switch>
-        <Route path={`/plugins/${pluginId}`} exact>
+      <Routes>
+        <Route path={`/plugins/${pluginId}`}>
           <HomePage />
         </Route>
         <Route>
           <AnErrorOccurred />
         </Route>
-      </Switch>
+      </Routes>
     </div>
   );
 };

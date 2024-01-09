@@ -1,5 +1,3 @@
-import { ComponentType, LazyExoticComponent } from 'react';
-
 import { render } from '@testing-library/react';
 
 import { StrapiApp } from '../StrapiApp';
@@ -196,7 +194,7 @@ describe('ADMIN | new StrapiApp', () => {
       const section = { id: 'foo', intlLabel: { id: 'foo', defaultMessage: 'foo' }, links: [] };
       const links = [
         {
-          Component: jest.fn() as unknown as LazyExoticComponent<ComponentType>,
+          Component: jest.fn(),
           to: '/bar',
           id: 'bar',
           intlLabel: { id: 'bar', defaultMessage: 'bar' },
@@ -212,7 +210,7 @@ describe('ADMIN | new StrapiApp', () => {
     it('should add a link correctly to the global section', () => {
       const app = new StrapiApp();
       const link = {
-        Component: jest.fn() as unknown as LazyExoticComponent<ComponentType>,
+        Component: jest.fn(),
         to: '/bar',
         id: 'bar',
         intlLabel: { id: 'bar', defaultMessage: 'bar' },
@@ -229,7 +227,7 @@ describe('ADMIN | new StrapiApp', () => {
       const app = new StrapiApp();
       const links = [
         {
-          Component: jest.fn() as unknown as LazyExoticComponent<ComponentType>,
+          Component: jest.fn(),
           to: '/bar',
           id: 'bar',
           intlLabel: { id: 'bar', defaultMessage: 'bar' },
@@ -465,7 +463,7 @@ describe('ADMIN | new StrapiApp', () => {
     it('addMenuLink should add a link to the menu', () => {
       const app = new StrapiApp();
       const link = {
-        Component: jest.fn() as unknown as LazyExoticComponent<ComponentType>,
+        Component: jest.fn(),
         to: '/plugins/bar',
         intlLabel: { id: 'bar', defaultMessage: 'bar' },
         permissions: [],

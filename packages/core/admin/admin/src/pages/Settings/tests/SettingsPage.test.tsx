@@ -3,7 +3,7 @@ import { render as baseRender, screen } from '@tests/utils';
 import { Route } from 'react-router-dom';
 
 import { useSettingsMenu } from '../../../hooks/useSettingsMenu';
-import { SettingsPage } from '../Layout';
+import { Layout } from '../Layout';
 
 jest.mock('../../../hooks/useSettingsMenu');
 
@@ -16,7 +16,7 @@ jest.mock('../pages/ApplicationInfo/ApplicationInfoPage', () => ({
 const render = (settings: StrapiAppProviderProps['settings']) =>
   baseRender(
     <Route path="/settings/:settingId">
-      <SettingsPage />
+      <Layout />
     </Route>,
     {
       initialEntries: ['/settings/application-infos'],

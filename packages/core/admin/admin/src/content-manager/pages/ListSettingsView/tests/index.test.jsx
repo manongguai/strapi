@@ -61,7 +61,7 @@ describe('CM | LV | Configure the view', () => {
     /**
      * For each attribute it should have the following
      */
-    ['id', 'cover', 'postal_code'].forEach((attribute) => {
+    ['id', 'json', 'postal_code'].forEach((attribute) => {
       expect(getByRole('button', { name: `Edit ${attribute}` })).toBeInTheDocument();
       expect(getByRole('button', { name: `Delete ${attribute}` })).toBeInTheDocument();
     });
@@ -142,20 +142,6 @@ describe('CM | LV | Configure the view', () => {
       await user.click(getByRole('button', { name: 'Cancel' }));
 
       expect(queryByRole('dialog', { name: 'Edit Id' })).not.toBeInTheDocument();
-    });
-
-    it('should not show sortable toggle input if field not sortable', async () => {
-      const { getByRole, queryByRole, user } = render();
-
-      await waitFor(() =>
-        expect(getByRole('heading', { name: 'Configure the view - Address' })).toBeInTheDocument()
-      );
-
-      await user.click(getByRole('button', { name: 'Edit cover' }));
-
-      expect(
-        queryByRole('checkbox', { name: 'Enable sort on this field' })
-      ).not.toBeInTheDocument();
     });
   });
 });

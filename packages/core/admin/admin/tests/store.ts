@@ -66,46 +66,12 @@ const initialState = {
             pluginOptions: {},
             maxLength: 2,
           },
-          cover: {
-            type: 'media',
-            multiple: false,
-            required: false,
-            allowedTypes: ['files', 'images', 'videos', 'audios'],
-            pluginOptions: {},
-          },
-          images: {
-            type: 'media',
-            multiple: true,
-            required: false,
-            allowedTypes: ['images'],
-            pluginOptions: {},
-          },
-          city: {
-            type: 'string',
-            required: true,
-            maxLength: 200,
-            pluginOptions: {},
-          },
           json: {
             type: 'json',
             pluginOptions: {},
           },
           slug: {
             type: 'uid',
-          },
-          notrepeat_req: {
-            type: 'component',
-            repeatable: false,
-            pluginOptions: {},
-            component: 'blog.test-como',
-            required: true,
-          },
-          repeat_req: {
-            type: 'component',
-            repeatable: true,
-            pluginOptions: {},
-            component: 'blog.test-como',
-            required: true,
           },
           repeat_req_min: {
             type: 'component',

@@ -15,12 +15,7 @@ jest.mock('@strapi/helper-plugin', () => ({
 const EDIT_ATTRIBUTES = [
   [
     { name: 'slug', size: 6 },
-    { name: 'notrepeat_req', size: 12 },
-    { name: 'repeat_req', size: 12 },
     { name: 'repeat_req_min', size: 12 },
-    { name: 'cover', size: 6 },
-    { name: 'images', size: 6 },
-    { name: 'city', size: 6 },
     { name: 'json', size: 12 },
   ],
 ];

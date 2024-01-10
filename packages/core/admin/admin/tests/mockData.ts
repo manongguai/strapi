@@ -1442,49 +1442,7 @@ const CM_LAYOUT_MOCK_DATA = {
         list: {
           label: 'postal_code',
           searchable: true,
-          sortable: true,
-        },
-      },
-      cover: {
-        edit: {
-          label: 'cover',
-          description: '',
-          placeholder: '',
-          visible: true,
-          editable: true,
-        },
-        list: {
-          label: 'cover',
-          searchable: false,
           sortable: false,
-        },
-      },
-      images: {
-        edit: {
-          label: 'images',
-          description: '',
-          placeholder: '',
-          visible: true,
-          editable: true,
-        },
-        list: {
-          label: 'images',
-          searchable: false,
-          sortable: false,
-        },
-      },
-      city: {
-        edit: {
-          label: 'city',
-          description: '',
-          placeholder: '',
-          visible: true,
-          editable: true,
-        },
-        list: {
-          label: 'city',
-          searchable: true,
-          sortable: true,
         },
       },
       json: {
@@ -1513,34 +1471,6 @@ const CM_LAYOUT_MOCK_DATA = {
           label: 'slug',
           searchable: true,
           sortable: true,
-        },
-      },
-      notrepeat_req: {
-        edit: {
-          label: 'notrepeat_req',
-          description: '',
-          placeholder: '',
-          visible: true,
-          editable: true,
-        },
-        list: {
-          label: 'notrepeat_req',
-          searchable: false,
-          sortable: false,
-        },
-      },
-      repeat_req: {
-        edit: {
-          label: 'repeat_req',
-          description: '',
-          placeholder: '',
-          visible: true,
-          editable: true,
-        },
-        list: {
-          label: 'repeat_req',
-          searchable: false,
-          sortable: false,
         },
       },
       repeat_req_min: {
@@ -1587,7 +1517,7 @@ const CM_LAYOUT_MOCK_DATA = {
       },
     },
     layouts: {
-      list: ['id', 'cover', 'postal_code'],
+      list: ['id', 'json', 'postal_code'],
       edit: [
         [
           {
@@ -1597,36 +1527,8 @@ const CM_LAYOUT_MOCK_DATA = {
         ],
         [
           {
-            name: 'notrepeat_req',
-            size: 12,
-          },
-        ],
-        [
-          {
-            name: 'repeat_req',
-            size: 12,
-          },
-        ],
-        [
-          {
             name: 'repeat_req_min',
             size: 12,
-          },
-        ],
-        [
-          {
-            name: 'cover',
-            size: 6,
-          },
-          {
-            name: 'images',
-            size: 6,
-          },
-        ],
-        [
-          {
-            name: 'city',
-            size: 6,
           },
         ],
         [

@@ -212,7 +212,7 @@ describe('ADMIN | new StrapiApp', () => {
               "$$typeof": Symbol(react.lazy),
               "_init": [Function],
               "_payload": {
-                "_result": [MockFunction],
+                "_result": [Function],
                 "_status": -1,
               },
             },
@@ -247,7 +247,7 @@ describe('ADMIN | new StrapiApp', () => {
             "$$typeof": Symbol(react.lazy),
             "_init": [Function],
             "_payload": {
-              "_result": [MockFunction],
+              "_result": [Function],
               "_status": -1,
             },
           },
@@ -284,7 +284,7 @@ describe('ADMIN | new StrapiApp', () => {
               "$$typeof": Symbol(react.lazy),
               "_init": [Function],
               "_payload": {
-                "_result": [MockFunction],
+                "_result": [Function],
                 "_status": -1,
               },
             },
@@ -538,7 +538,7 @@ describe('ADMIN | new StrapiApp', () => {
             "$$typeof": Symbol(react.lazy),
             "_init": [Function],
             "_payload": {
-              "_result": [MockFunction],
+              "_result": [Function],
               "_status": -1,
             },
           },

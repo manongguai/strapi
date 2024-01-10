@@ -714,8 +714,8 @@ class StrapiApp {
                       },
                     },
                     ...Object.values(this.settings).flatMap(({ links }) =>
-                      links.map(({ to, path, Component }) => ({
-                        path: path ?? to,
+                      links.map(({ to, Component }) => ({
+                        path: `${to}/*`,
                         element: (
                           <React.Suspense fallback={<LoadingIndicatorPage />}>
                             <Component />
@@ -726,8 +726,8 @@ class StrapiApp {
                     ...settingsRoutes,
                   ],
                 },
-                ...this.menu.map(({ to, path, Component }) => ({
-                  path: path ?? to,
+                ...this.menu.map(({ to, Component }) => ({
+                  path: `${to}/*`,
                   element: (
                     <React.Suspense fallback={<LoadingIndicatorPage />}>
                       <Component />

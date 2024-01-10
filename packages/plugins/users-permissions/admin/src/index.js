@@ -26,7 +26,6 @@ export default {
           },
           id: 'roles',
           to: `users-permissions/roles`,
-          path: `users-permissions/roles/*`,
           Component: () => import('./pages/Roles'),
           permissions: PERMISSIONS.accessRoles,
         },

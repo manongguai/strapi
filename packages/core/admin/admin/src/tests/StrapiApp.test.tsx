@@ -208,7 +208,14 @@ describe('ADMIN | new StrapiApp', () => {
       expect(app.settings.foo.links).toMatchInlineSnapshot(`
         [
           {
-            "Component": [MockFunction],
+            "Component": {
+              "$$typeof": Symbol(react.lazy),
+              "_init": [Function],
+              "_payload": {
+                "_result": [MockFunction],
+                "_status": -1,
+              },
+            },
             "id": "bar",
             "intlLabel": {
               "defaultMessage": "bar",
@@ -236,7 +243,14 @@ describe('ADMIN | new StrapiApp', () => {
       expect(app.settings.global.links).toHaveLength(1);
       expect(app.settings.global.links[0]).toMatchInlineSnapshot(`
         {
-          "Component": [MockFunction],
+          "Component": {
+            "$$typeof": Symbol(react.lazy),
+            "_init": [Function],
+            "_payload": {
+              "_result": [MockFunction],
+              "_status": -1,
+            },
+          },
           "id": "bar",
           "intlLabel": {
             "defaultMessage": "bar",
@@ -266,7 +280,14 @@ describe('ADMIN | new StrapiApp', () => {
       expect(app.settings.global.links).toMatchInlineSnapshot(`
         [
           {
-            "Component": [MockFunction],
+            "Component": {
+              "$$typeof": Symbol(react.lazy),
+              "_init": [Function],
+              "_payload": {
+                "_result": [MockFunction],
+                "_status": -1,
+              },
+            },
             "id": "bar",
             "intlLabel": {
               "defaultMessage": "bar",
@@ -513,7 +534,14 @@ describe('ADMIN | new StrapiApp', () => {
       expect(app.menu[0]).toBeDefined();
       expect(app.menu[0]).toMatchInlineSnapshot(`
         {
-          "Component": [MockFunction],
+          "Component": {
+            "$$typeof": Symbol(react.lazy),
+            "_init": [Function],
+            "_payload": {
+              "_result": [MockFunction],
+              "_status": -1,
+            },
+          },
           "icon": [Function],
           "intlLabel": {
             "defaultMessage": "bar",

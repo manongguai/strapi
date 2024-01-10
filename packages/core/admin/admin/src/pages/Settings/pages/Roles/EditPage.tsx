@@ -270,7 +270,7 @@ const ProtectedEditPage = () => {
   }
 
   if (!canRead && !canUpdate) {
-    return <Navigate to="/" />;
+    return <Navigate to=".." />;
   }
 
   return <EditPage />;

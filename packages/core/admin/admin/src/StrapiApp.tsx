@@ -207,7 +207,7 @@ class StrapiApp {
     ) {
       console.warn(`
       [${link.intlLabel.defaultMessage}]: [deprecated] addMenuLink() was called with an async Component from the plugin "${link.intlLabel.defaultMessage}". This will be removed
-        in the future. Please use: \`Component: () => import(path)\` instead.
+        in the future. Please use: \`Component: () => import(path)\` ensuring you return a default export instead.
       `);
     }
 
@@ -221,7 +221,15 @@ class StrapiApp {
 
     this.menu.push({
       ...link,
-      Component: React.lazy(link.Component),
+      Component: React.lazy(async () => {
+        const mod = await link.Component();
+
+        if ('default' in mod) {
+          return mod;
+        } else {
+          return { default: mod };
+        }
+      }),
     });
   };
 
@@ -264,7 +272,7 @@ class StrapiApp {
     ) {
       console.warn(`
       [${link.intlLabel.defaultMessage}]: [deprecated] addSettingsLink() was called with an async Component from the plugin "${link.intlLabel.defaultMessage}". This will be removed
-        in the future. Please use: \`Component: () => import(path)\` instead.
+        in the future. Please use: \`Component: () => import(path)\` ensuring you return a default export instead.
       `);
     }
 
@@ -286,7 +294,15 @@ class StrapiApp {
 
     this.settings[sectionId].links.push({
       ...link,
-      Component: React.lazy(link.Component),
+      Component: React.lazy(async () => {
+        const mod = await link.Component();
+
+        if ('default' in mod) {
+          return mod;
+        } else {
+          return { default: mod };
+        }
+      }),
     });
   };
 

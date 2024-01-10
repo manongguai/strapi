@@ -137,6 +137,6 @@ describe('ViewSettingsMenu', () => {
       })
     );
 
-    await screen.findByText('/api::temp.temp/configurations/list');
+    await screen.findByText('/configurations/list');
   });
 });

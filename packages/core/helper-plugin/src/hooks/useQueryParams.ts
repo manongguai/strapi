@@ -8,8 +8,8 @@ const useQueryParams = <TQuery extends object>(initialParams?: TQuery) => {
   const navigate = useNavigate();
 
   const query = useMemo(() => {
-    const searchQuery = search.substring(1);
-
+    // TODO: investigate why sometimes we're getting the search with a leading `?` and sometimes not.
+    const searchQuery = search.startsWith('?') ? search.slice(1) : search;
     if (!search && initialParams) {
       return initialParams;
     }
@@ -32,7 +32,7 @@ const useQueryParams = <TQuery extends object>(initialParams?: TQuery) => {
         nextQuery = { ...query, ...nextParams };
       }
 
-      navigate({ search: stringify(nextQuery, { encode: false }) });
+      navigate({ pathname: '', search: stringify(nextQuery, { encode: false }) });
     },
     [navigate, query]
   );

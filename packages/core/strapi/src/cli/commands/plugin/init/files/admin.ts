@@ -20,12 +20,8 @@ import { HomePage } from './HomePage';
 const App = () => {
   return (
     <Switch>
-      <Route path={\`/plugins/\${PLUGIN_ID}\`} exact>
-        <HomePage />
-      </Route>
-      <Route>
-        <AnErrorOccurred />
-      </Route>
+      <Route index element={<HomePage />} />
+      <Route path="*" element={<AnErrorOccurred />} />
     </Switch>
   );
 };

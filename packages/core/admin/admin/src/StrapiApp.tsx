@@ -221,8 +221,6 @@ class StrapiApp {
 
     this.menu.push({
       ...link,
-
-      // React.lazy can be removed once we migrate to react-router@6, because the <Route /> component can handle it natively
       Component: React.lazy(link.Component),
     });
   };
@@ -288,8 +286,6 @@ class StrapiApp {
 
     this.settings[sectionId].links.push({
       ...link,
-
-      // React.lazy can be removed once we migrate to react-router@6, because the <Route /> component can handle it natively
       Component: React.lazy(link.Component),
     });
   };

@@ -50,6 +50,7 @@ describe('ADMIN | new StrapiApp', () => {
           "collectionTypeLinks": [],
           "components": [],
           "fieldSizes": {},
+          "isLoading": true,
           "models": [],
           "singleTypeLinks": [],
         },
@@ -195,7 +196,7 @@ describe('ADMIN | new StrapiApp', () => {
       const links = [
         {
           Component: jest.fn(),
-          to: '/bar',
+          to: 'bar',
           id: 'bar',
           intlLabel: { id: 'bar', defaultMessage: 'bar' },
           permissions: [],
@@ -204,14 +205,27 @@ describe('ADMIN | new StrapiApp', () => {
       app.createSettingSection(section, links);
 
       expect(app.settings.foo).toBeDefined();
-      expect(app.settings.foo.links).toEqual(links);
+      expect(app.settings.foo.links).toMatchInlineSnapshot(`
+        [
+          {
+            "Component": [MockFunction],
+            "id": "bar",
+            "intlLabel": {
+              "defaultMessage": "bar",
+              "id": "bar",
+            },
+            "permissions": [],
+            "to": "bar",
+          },
+        ]
+      `);
     });
 
     it('should add a link correctly to the global section', () => {
       const app = new StrapiApp();
       const link = {
         Component: jest.fn(),
-        to: '/bar',
+        to: 'bar',
         id: 'bar',
         intlLabel: { id: 'bar', defaultMessage: 'bar' },
         permissions: [],
@@ -220,7 +234,18 @@ describe('ADMIN | new StrapiApp', () => {
       app.addSettingsLink('global', link);
 
       expect(app.settings.global.links).toHaveLength(1);
-      expect(app.settings.global.links[0]).toEqual(link);
+      expect(app.settings.global.links[0]).toMatchInlineSnapshot(`
+        {
+          "Component": [MockFunction],
+          "id": "bar",
+          "intlLabel": {
+            "defaultMessage": "bar",
+            "id": "bar",
+          },
+          "permissions": [],
+          "to": "bar",
+        }
+      `);
     });
 
     it('should add an array of links correctly to the global section', () => {
@@ -228,7 +253,7 @@ describe('ADMIN | new StrapiApp', () => {
       const links = [
         {
           Component: jest.fn(),
-          to: '/bar',
+          to: 'bar',
           id: 'bar',
           intlLabel: { id: 'bar', defaultMessage: 'bar' },
           permissions: [],
@@ -238,7 +263,20 @@ describe('ADMIN | new StrapiApp', () => {
       app.addSettingsLinks('global', links);
 
       expect(app.settings.global.links).toHaveLength(1);
-      expect(app.settings.global.links).toEqual(links);
+      expect(app.settings.global.links).toMatchInlineSnapshot(`
+        [
+          {
+            "Component": [MockFunction],
+            "id": "bar",
+            "intlLabel": {
+              "defaultMessage": "bar",
+              "id": "bar",
+            },
+            "permissions": [],
+            "to": "bar",
+          },
+        ]
+      `);
     });
   });
 
@@ -464,7 +502,7 @@ describe('ADMIN | new StrapiApp', () => {
       const app = new StrapiApp();
       const link = {
         Component: jest.fn(),
-        to: '/plugins/bar',
+        to: 'plugins/bar',
         intlLabel: { id: 'bar', defaultMessage: 'bar' },
         permissions: [],
         icon: () => <>{'book'}</>,
@@ -473,7 +511,18 @@ describe('ADMIN | new StrapiApp', () => {
       app.addMenuLink(link);
 
       expect(app.menu[0]).toBeDefined();
-      expect(app.menu[0]).toEqual(link);
+      expect(app.menu[0]).toMatchInlineSnapshot(`
+        {
+          "Component": [MockFunction],
+          "icon": [Function],
+          "intlLabel": {
+            "defaultMessage": "bar",
+            "id": "bar",
+          },
+          "permissions": [],
+          "to": "plugins/bar",
+        }
+      `);
     });
   });
 

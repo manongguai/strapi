@@ -15,12 +15,8 @@ const App = () => {
   return (
     <div>
       <Routes>
-        <Route path={`/plugins/${pluginId}`}>
-          <HomePage />
-        </Route>
-        <Route>
-          <AnErrorOccurred />
-        </Route>
+        <Route index element={<HomePage />} />
+        <Route path="*" element={<AnErrorOccurred />} />
       </Routes>
     </div>
   );

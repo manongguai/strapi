@@ -112,7 +112,7 @@ const ListView = () => {
 
   usePrompt({
     when: hasModelBeenModified,
-    message: formatMessage({ id: getTrad('prompt.unsaved') }),
+    message: formatMessage({ id: getTrad('prompt.unsaved'), defaultMessage: 'Are you sure?' }),
   });
 
   return (

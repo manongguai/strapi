@@ -17,7 +17,115 @@ const initialState = {
     },
   },
   'content-manager_app': {
+    collectionTypeLinks: [],
+    components: [
+      {
+        uid: 'blog.test-como',
+        isDisplayed: true,
+        apiID: 'test-como',
+        category: 'blog',
+        info: {
+          displayName: 'test comp',
+          icon: 'air-freshener',
+          description: '',
+        },
+        options: {},
+        attributes: {
+          id: {
+            type: 'integer',
+          },
+          name: {
+            type: 'string',
+            default: 'toto',
+          },
+        },
+      },
+    ],
     fieldSizes: {},
+    models: [
+      {
+        uid: 'api::address.address',
+        isDisplayed: true,
+        apiID: 'address',
+        kind: 'collectionType',
+        info: {
+          displayName: 'Address',
+          singularName: 'address',
+          pluralName: 'addresses',
+          description: '',
+          name: 'Address',
+        },
+        options: {},
+        pluginOptions: {},
+        attributes: {
+          id: {
+            type: 'integer',
+          },
+          postal_code: {
+            type: 'string',
+            pluginOptions: {},
+            maxLength: 2,
+          },
+          cover: {
+            type: 'media',
+            multiple: false,
+            required: false,
+            allowedTypes: ['files', 'images', 'videos', 'audios'],
+            pluginOptions: {},
+          },
+          images: {
+            type: 'media',
+            multiple: true,
+            required: false,
+            allowedTypes: ['images'],
+            pluginOptions: {},
+          },
+          city: {
+            type: 'string',
+            required: true,
+            maxLength: 200,
+            pluginOptions: {},
+          },
+          json: {
+            type: 'json',
+            pluginOptions: {},
+          },
+          slug: {
+            type: 'uid',
+          },
+          notrepeat_req: {
+            type: 'component',
+            repeatable: false,
+            pluginOptions: {},
+            component: 'blog.test-como',
+            required: true,
+          },
+          repeat_req: {
+            type: 'component',
+            repeatable: true,
+            pluginOptions: {},
+            component: 'blog.test-como',
+            required: true,
+          },
+          repeat_req_min: {
+            type: 'component',
+            repeatable: true,
+            pluginOptions: {},
+            component: 'blog.test-como',
+            required: false,
+            min: 2,
+          },
+          createdAt: {
+            type: 'datetime',
+          },
+          updatedAt: {
+            type: 'datetime',
+          },
+        },
+      },
+    ],
+    singleTypeLinks: [],
+    isLoading: true,
   },
   rbacProvider: {
     allPermissions: fixtures.permissions.allPermissions,

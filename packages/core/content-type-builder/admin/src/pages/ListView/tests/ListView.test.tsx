@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { lightTheme, ThemeProvider } from '@strapi/design-system';
 import { render } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
-import { MemoryRouter } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { FormModalNavigationProvider } from '../../../components/FormModalNavigationProvider/FormModalNavigationProvider';
 import pluginEn from '../../../translations/en.json';
@@ -40,14 +40,21 @@ const makeApp = () => {
     }, {}),
   };
 
+  const router = createMemoryRouter([
+    {
+      path: '/',
+      element: (
+        <FormModalNavigationProvider>
+          <ListView />
+        </FormModalNavigationProvider>
+      ),
+    },
+  ]);
+
   return (
     <IntlProvider messages={messages} defaultLocale="en" textComponent="span" locale="en">
       <ThemeProvider theme={lightTheme}>
-        <MemoryRouter>
-          <FormModalNavigationProvider>
-            <ListView />
-          </FormModalNavigationProvider>
-        </MemoryRouter>
+        <RouterProvider router={router} />
       </ThemeProvider>
     </IntlProvider>
   );

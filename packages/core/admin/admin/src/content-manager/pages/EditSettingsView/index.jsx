@@ -67,9 +67,17 @@ const EditSettingsView = () => {
       return { rawContentTypeLayout, rawComponentsLayouts };
     }, [layout]);
 
-  const [reducerState, dispatch] = useReducer(reducer, initialState, () =>
-    init(initialState, mainLayout, components)
-  );
+  const [reducerState, dispatch] = useReducer(reducer, initialState);
+
+  React.useEffect(() => {
+    if (mainLayout) {
+      dispatch({
+        type: 'SET_DATA',
+        data: init(initialState, mainLayout, components),
+      });
+    }
+  }, [mainLayout, components]);
+
   const [isDraggingSibling, setIsDraggingSibling] = useState(false);
   const { trackUsage } = useTracking();
   const toggleNotification = useNotification();
@@ -78,7 +86,7 @@ const EditSettingsView = () => {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { componentLayouts, initialData, modifiedData, metaToEdit, metaForm } = reducerState;
   const { formatMessage } = useIntl();
-  const modelName = mainLayout.info.displayName;
+  const modelName = mainLayout?.info?.displayName;
   const attributes = modifiedData?.attributes ?? {};
   const fieldSizes = useTypedSelector((state) => state['content-manager_app'].fieldSizes);
   const { put } = useFetchClient();
@@ -102,9 +110,9 @@ const EditSettingsView = () => {
       ].includes(type) && !!type
     );
   });
-  const editLayout = modifiedData.layouts.edit;
+  const editLayout = modifiedData?.layouts?.edit ?? [];
   const displayedFields = editLayout.flatMap((layout) => layout.rowContent);
-  const editLayoutFields = Object.keys(modifiedData.attributes)
+  const editLayoutFields = Object.keys(modifiedData?.attributes ?? {})
     .filter((attr) => (modifiedData?.metadatas?.[attr]?.edit?.visible ?? false) === true)
     .filter((attr) => displayedFields.findIndex((el) => el.name === attr) === -1)
     .sort();
@@ -339,7 +347,7 @@ const EditSettingsView = () => {
                           },
                         });
                       }}
-                      value={modifiedData.settings.mainField}
+                      value={modifiedData?.settings?.mainField}
                     >
                       {entryTitleOptions.map((attribute) => (
                         <Option key={attribute} value={attribute}>

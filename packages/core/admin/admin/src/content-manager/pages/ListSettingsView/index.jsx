@@ -70,13 +70,18 @@ const ListSettingsView = () => {
     })
   );
 
+  React.useEffect(() => {
+    dispatch({
+      type: 'SET_DATA',
+      data: layout,
+    });
+  }, [layout]);
+
   const isModalFormOpen = Object.keys(fieldForm).length !== 0;
 
   const { attributes = {}, options } = layout ?? {};
-  const {
-    list: { displayedFields = [] },
-  } = modifiedData?.layouts ?? {
-    list: {},
+  const { list: displayedFields = [] } = modifiedData?.layouts ?? {
+    list: [],
   };
 
   const handleChange = ({ target: { name, value } }) => {

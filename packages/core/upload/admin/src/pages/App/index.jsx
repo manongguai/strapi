@@ -38,8 +38,8 @@ const Upload = () => {
       {rawQuery ? (
         <Suspense fallback={<LoadingIndicatorPage />}>
           <Routes>
-            <Route exact path="/" element={<MediaLibrary />} />
-            <Route exact path="configuration" element={<ConfigureTheView config={config} />} />
+            <Route index element={<MediaLibrary />} />
+            <Route path="configuration" element={<ConfigureTheView config={config} />} />
           </Routes>
         </Suspense>
       ) : null}

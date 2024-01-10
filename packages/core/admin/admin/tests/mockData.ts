@@ -1406,7 +1406,299 @@ const PROVIDERS_MOCK_DATA = {
   },
 };
 
+/* -------------------------------------------------------------------------------------------------
+ * CM_LAYOUT_MOCK_DATA
+ * -----------------------------------------------------------------------------------------------*/
+
+const CM_LAYOUT_MOCK_DATA = {
+  contentType: {
+    uid: 'api::address.address',
+    settings: {
+      bulkable: true,
+      filterable: true,
+      searchable: true,
+      pageSize: 10,
+      mainField: 'id',
+      defaultSortBy: 'id',
+      defaultSortOrder: 'ASC',
+    },
+    metadatas: {
+      id: {
+        edit: {},
+        list: {
+          label: 'id',
+          searchable: true,
+          sortable: true,
+        },
+      },
+      postal_code: {
+        edit: {
+          label: 'postal_code',
+          description: '',
+          placeholder: '',
+          visible: true,
+          editable: true,
+        },
+        list: {
+          label: 'postal_code',
+          searchable: true,
+          sortable: true,
+        },
+      },
+      cover: {
+        edit: {
+          label: 'cover',
+          description: '',
+          placeholder: '',
+          visible: true,
+          editable: true,
+        },
+        list: {
+          label: 'cover',
+          searchable: false,
+          sortable: false,
+        },
+      },
+      images: {
+        edit: {
+          label: 'images',
+          description: '',
+          placeholder: '',
+          visible: true,
+          editable: true,
+        },
+        list: {
+          label: 'images',
+          searchable: false,
+          sortable: false,
+        },
+      },
+      city: {
+        edit: {
+          label: 'city',
+          description: '',
+          placeholder: '',
+          visible: true,
+          editable: true,
+        },
+        list: {
+          label: 'city',
+          searchable: true,
+          sortable: true,
+        },
+      },
+      json: {
+        edit: {
+          label: 'json',
+          description: '',
+          placeholder: '',
+          visible: true,
+          editable: true,
+        },
+        list: {
+          label: 'json',
+          searchable: false,
+          sortable: false,
+        },
+      },
+      slug: {
+        edit: {
+          label: 'slug',
+          description: '',
+          placeholder: '',
+          visible: true,
+          editable: true,
+        },
+        list: {
+          label: 'slug',
+          searchable: true,
+          sortable: true,
+        },
+      },
+      notrepeat_req: {
+        edit: {
+          label: 'notrepeat_req',
+          description: '',
+          placeholder: '',
+          visible: true,
+          editable: true,
+        },
+        list: {
+          label: 'notrepeat_req',
+          searchable: false,
+          sortable: false,
+        },
+      },
+      repeat_req: {
+        edit: {
+          label: 'repeat_req',
+          description: '',
+          placeholder: '',
+          visible: true,
+          editable: true,
+        },
+        list: {
+          label: 'repeat_req',
+          searchable: false,
+          sortable: false,
+        },
+      },
+      repeat_req_min: {
+        edit: {
+          label: 'repeat_req_min',
+          description: '',
+          placeholder: '',
+          visible: true,
+          editable: true,
+        },
+        list: {
+          label: 'repeat_req_min',
+          searchable: false,
+          sortable: false,
+        },
+      },
+      createdAt: {
+        edit: {
+          label: 'createdAt',
+          description: '',
+          placeholder: '',
+          visible: false,
+          editable: true,
+        },
+        list: {
+          label: 'createdAt',
+          searchable: true,
+          sortable: true,
+        },
+      },
+      updatedAt: {
+        edit: {
+          label: 'updatedAt',
+          description: '',
+          placeholder: '',
+          visible: false,
+          editable: true,
+        },
+        list: {
+          label: 'updatedAt',
+          searchable: true,
+          sortable: true,
+        },
+      },
+    },
+    layouts: {
+      list: ['id', 'cover', 'postal_code'],
+      edit: [
+        [
+          {
+            name: 'slug',
+            size: 6,
+          },
+        ],
+        [
+          {
+            name: 'notrepeat_req',
+            size: 12,
+          },
+        ],
+        [
+          {
+            name: 'repeat_req',
+            size: 12,
+          },
+        ],
+        [
+          {
+            name: 'repeat_req_min',
+            size: 12,
+          },
+        ],
+        [
+          {
+            name: 'cover',
+            size: 6,
+          },
+          {
+            name: 'images',
+            size: 6,
+          },
+        ],
+        [
+          {
+            name: 'city',
+            size: 6,
+          },
+        ],
+        [
+          {
+            name: 'json',
+            size: 12,
+          },
+        ],
+      ],
+    },
+  },
+  components: {
+    'blog.test-como': {
+      uid: 'blog.test-como',
+      category: 'blog',
+      settings: {
+        bulkable: true,
+        filterable: true,
+        searchable: true,
+        pageSize: 10,
+        mainField: 'name',
+        defaultSortBy: 'name',
+        defaultSortOrder: 'ASC',
+      },
+      metadatas: {
+        id: {
+          edit: {},
+          list: {
+            label: 'id',
+            searchable: false,
+            sortable: false,
+          },
+        },
+        name: {
+          edit: {
+            label: 'name',
+            description: '',
+            placeholder: '',
+            visible: true,
+            editable: true,
+          },
+          list: {
+            label: 'name',
+            searchable: true,
+            sortable: true,
+          },
+        },
+      },
+      layouts: {
+        list: ['id', 'name'],
+        edit: [
+          [
+            {
+              name: 'name',
+              size: 6,
+            },
+          ],
+        ],
+      },
+      isComponent: true,
+    },
+  },
+};
+
+/* -------------------------------------------------------------------------------------------------
+ * MOCK_DATA_EXPORTS
+ * -----------------------------------------------------------------------------------------------*/
+
 const mockData = {
+  contentManager: {
+    layout: CM_LAYOUT_MOCK_DATA,
+  },
   marketplace: {
     plugins: PLUGINS_MOCK_DATA,
     providers: PROVIDERS_MOCK_DATA,

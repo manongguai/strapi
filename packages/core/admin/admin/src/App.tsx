@@ -30,10 +30,10 @@ import { AuthPage } from './pages/Auth/AuthPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { UseCasePage } from './pages/UseCasePage';
 import { createRoute } from './utils/createRoute';
-
+import { ROUTES_EE as ROUTES_CE} from '../../ee/admin/src/constants'
 type StrapiRoute = Pick<MenuItem, 'exact' | 'to'> & Required<Pick<MenuItem, 'Component'>>;
 
-const ROUTES_CE: StrapiRoute[] | null = null;
+// const ROUTES_CE: StrapiRoute[] | null = null;
 
 const AuthenticatedApp = React.lazy(() =>
   import('./components/AuthenticatedApp').then((mod) => ({ default: mod.AuthenticatedApp }))

@@ -29,10 +29,8 @@ const AuthResponse = () => {
   const fetchUserInfo = React.useCallback(async () => {
     try {
       const jwtToken = Cookies.get('jwtToken');
-
-      auth.clearAppStorage();
-
       if (jwtToken) {
+        auth.clearAppStorage();
         auth.setToken(jwtToken, true);
         const requestUrl = '/admin/users/me';
         const {
@@ -40,11 +38,9 @@ const AuthResponse = () => {
         } = await get(requestUrl);
 
         auth.setUserInfo(data, true);
-
         Cookies.remove('jwtToken');
-
-        push('/auth/login');
       }
+      push('/auth/login');
     } catch (e) {
       redirectToOops();
     }

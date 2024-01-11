@@ -8,6 +8,9 @@ const INJECTION_ZONES = {
     tutorials: {
       links: [],
     },
+    login:{
+      actions: []
+    }
   },
   contentManager: {
     editView: { informations: [], 'right-links': [] },
@@ -35,6 +38,9 @@ interface InjectionZones {
     tutorials: {
       links: InjectionZoneComponent[];
     };
+    login:{
+      actions: InjectionZoneComponent[];
+    };
   };
   contentManager: {
     editView: {
@@ -52,6 +58,7 @@ interface InjectionZones {
 
 type InjectionZoneArea =
   | 'admin.tutorials.links'
+  | 'admin.login.actions'
   | 'contentManager.editView.informations'
   | 'contentManager.editView.right-links'
   | 'contentManager.listView.actions'
@@ -71,7 +78,7 @@ type InjectionZoneBlock = InjectionZoneArea extends `${string}.${string}.${infer
 const InjectionZone = ({ area, ...props }: { area: InjectionZoneArea }) => {
   const components = useInjectionZone(area);
 
-  return components.map((component) => <component.Component key={component.name} {...props} />);
+  return <>{components.map((component) => <component.Component key={component.name} {...props} />)}</>;
 };
 
 export { InjectionZone, INJECTION_ZONES };

@@ -25,6 +25,7 @@ import { setLocale } from '../../../reducer';
 import { FieldActionWrapper } from './FieldActionWrapper';
 
 import type { AxiosError } from 'axios';
+import { InjectionZone } from '../../../components/InjectionZone';
 
 interface LoginProps {
   children?: React.ReactNode;
@@ -207,7 +208,8 @@ const Login = ({ children }: LoginProps) => {
               </Form>
             )}
           </Formik>
-          {children}
+          {/* {children} */}
+          <InjectionZone area="admin.login.actions" />
         </LayoutContent>
         <Flex justifyContent="center">
           <Box paddingTop={4}>

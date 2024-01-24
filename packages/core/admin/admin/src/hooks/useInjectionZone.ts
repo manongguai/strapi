@@ -16,5 +16,5 @@ export const useInjectionZone = (area: InjectionZoneArea) => {
     InjectionZoneBlock
   ];
 
-  return getAdminInjectedComponents(moduleName, page, position);
+  return getAdminInjectedComponents(moduleName, page as "listView" | "tutorials" | "editView", position);
 };

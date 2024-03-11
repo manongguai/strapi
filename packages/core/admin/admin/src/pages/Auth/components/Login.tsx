@@ -11,7 +11,7 @@ import { useMutation } from 'react-query';
 import { NavLink, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import * as yup from 'yup';
-
+import { InjectionZone } from '../../../components/InjectionZone';
 import { Login } from '../../../../../shared/contracts/authentication';
 import { Logo } from '../../../components/UnauthenticatedLogo';
 import { useTypedDispatch } from '../../../core/store/hooks';
@@ -207,7 +207,7 @@ const Login = ({ children }: LoginProps) => {
               </Form>
             )}
           </Formik>
-          {children}
+          <InjectionZone area="admin.login.actions" />
         </LayoutContent>
         <Flex justifyContent="center">
           <Box paddingTop={4}>
